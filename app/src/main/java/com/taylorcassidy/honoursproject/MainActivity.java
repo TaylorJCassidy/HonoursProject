@@ -8,6 +8,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 
+import com.taylorcassidy.honoursproject.Filters.FIR;
+import com.taylorcassidy.honoursproject.Filters.IFilter;
 import com.taylorcassidy.honoursproject.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        FIR xFir = new FIR(5);
-        FIR yFir = new FIR(5);
-        FIR zFir = new FIR(5);
+        IFilter xFir = new FIR(5);
+        IFilter yFir = new FIR(5);
+        IFilter zFir = new FIR(5);
 
         SensorEventListener sensorEventListener = new SensorEventListener() {
             @Override

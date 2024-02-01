@@ -1,6 +1,8 @@
-package com.taylorcassidy.honoursproject;
+package com.taylorcassidy.honoursproject.Filters;
 
-public class FIR {
+import com.taylorcassidy.honoursproject.Filters.IFilter;
+
+public class FIR implements IFilter {
 
     private final float[] buffer;
     private final int bufferSize;
@@ -16,7 +18,8 @@ public class FIR {
     public FIR(int coefficientCount) {
         this(generateCoefficients(coefficientCount));
     }
-    
+
+    @Override
     public float filter(float value) {
         buffer[bufferPosition] = value;
 
