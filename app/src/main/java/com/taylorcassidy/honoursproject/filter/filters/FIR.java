@@ -1,6 +1,4 @@
-package com.taylorcassidy.honoursproject.Filters;
-
-import com.taylorcassidy.honoursproject.Filters.IFilter;
+package com.taylorcassidy.honoursproject.filter.filters;
 
 public class FIR implements IFilter {
 
