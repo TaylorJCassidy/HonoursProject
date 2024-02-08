@@ -15,7 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
-import com.taylorcassidy.honoursproject.sensors.AccelerometerController;
+import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
+import com.taylorcassidy.honoursproject.filter.factories.FIRFactory;
 
 public class AccelerometerReadout extends Fragment {
 
@@ -33,16 +34,17 @@ public class AccelerometerReadout extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AccelerometerController accelerometerController = new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE));
+        AccelerometerController accelerometerController =
+                new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory());
 
         binding.measure.setOnTouchListener((v, event) -> {
             v.performClick();
             switch(event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    accelerometerController.registerAccelerometerListener(data -> {
-                        binding.x.setText(String.valueOf(data[0]));
-                        binding.y.setText(String.valueOf(data[1]));
-                        binding.z.setText(String.valueOf(data[2]));
+                    accelerometerController.registerAccelerometerListener(acceleration -> {
+                        binding.x.setText(String.valueOf(acceleration.getX()));
+                        binding.y.setText(String.valueOf(acceleration.getY()));
+                        binding.z.setText(String.valueOf(acceleration.getZ()));
                     });
                     return true;
                 case MotionEvent.ACTION_UP:
