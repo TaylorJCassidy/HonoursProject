@@ -2,9 +2,7 @@ package com.taylorcassidy.honoursproject.ui;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
+import android.annotation.SuppressLint;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 
@@ -12,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
-import com.taylorcassidy.honoursproject.filter.FilterHelper;
-import com.taylorcassidy.honoursproject.filter.factories.FIRFactory;
+import com.taylorcassidy.honoursproject.sensors.AccelerometerController;
 
 public class AccelerometerReadout extends Fragment {
 
@@ -30,30 +28,28 @@ public class AccelerometerReadout extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility") //TODO maybe fix
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SensorManager sensorManager = (SensorManager) requireActivity().getSystemService(SENSOR_SERVICE);
-        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        AccelerometerController accelerometerController = new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE));
 
-        FilterHelper filter = new FilterHelper(new FIRFactory());
-
-        SensorEventListener sensorEventListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                float[] values = filter.filter(event.values);
-                binding.x.setText(String.valueOf(values[0]));
-                binding.y.setText(String.valueOf(values[1]));
-                binding.z.setText(String.valueOf(values[2]));
+        binding.measure.setOnTouchListener((v, event) -> {
+            v.performClick();
+            switch(event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    accelerometerController.registerAccelerometerListener(data -> {
+                        binding.x.setText(String.valueOf(data[0]));
+                        binding.y.setText(String.valueOf(data[1]));
+                        binding.z.setText(String.valueOf(data[2]));
+                    });
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    accelerometerController.unregisterAccelerometerListener();
+                    return true;
             }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                System.out.println(sensor.getName());
-            }
-        };
-
-        sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+            return true;
+        });
     }
 }
