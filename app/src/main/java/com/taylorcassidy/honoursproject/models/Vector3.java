@@ -1,16 +1,18 @@
 package com.taylorcassidy.honoursproject.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.Locale;
 
-public class Acceleration {
+public class Vector3 {
     private final float x;
     private final float y;
     private final float z;
 
-    public Acceleration(float[] data) {
-        x = data[0];
-        y = data[1];
-        z = data[2];
+    public Vector3(float[] vector) {
+        x = vector[0];
+        y = vector[1];
+        z = vector[2];
     }
 
     public float getX() {
@@ -25,8 +27,13 @@ public class Acceleration {
         return z;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return String.format(Locale.UK, "%f,%f,%f", x, y, z);
+        return String.format(Locale.UK, "x=%f, y=%f, z=%f", x, y, z);
+    }
+
+    public String toCSV() {
+        return String.format(Locale.UK, "%f,%f,%f%n", x, y, z);
     }
 }

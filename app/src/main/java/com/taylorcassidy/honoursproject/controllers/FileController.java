@@ -29,7 +29,7 @@ public class FileController {
 
     public void write(String line) {
         try {
-            outputStream.write((line + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
+            outputStream.write(line.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

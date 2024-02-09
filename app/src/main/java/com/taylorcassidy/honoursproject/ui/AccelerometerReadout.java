@@ -51,7 +51,7 @@ public class AccelerometerReadout extends Fragment {
                     accelerometerController.unregisterAccelerometerListener();
                     return true;
             }
-            return true;
+            return false;
         });
     }
 }

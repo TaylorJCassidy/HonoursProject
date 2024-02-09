@@ -8,7 +8,7 @@ import android.hardware.SensorManager;
 
 import com.taylorcassidy.honoursproject.filter.FilterHelper;
 import com.taylorcassidy.honoursproject.filter.factories.IFilterFactory;
-import com.taylorcassidy.honoursproject.models.Acceleration;
+import com.taylorcassidy.honoursproject.models.Vector3;
 
 public class AccelerometerController {
 
@@ -31,8 +31,8 @@ public class AccelerometerController {
             final FilterHelper filter = new FilterHelper(filterFactory);
             @Override
             public void onSensorChanged(SensorEvent event) {
-                Acceleration acceleration = new Acceleration(filter.filter(event.values));
-                fileController.write(acceleration.toString());
+                Vector3 acceleration = new Vector3(filter.filter(event.values));
+                fileController.write(acceleration.toCSV());
                 consumer.consume(acceleration);
             }
 
@@ -51,6 +51,6 @@ public class AccelerometerController {
     }
 
     public interface OnData {
-        void consume(Acceleration acceleration);
+        void consume(Vector3 vector3);
     }
 }
