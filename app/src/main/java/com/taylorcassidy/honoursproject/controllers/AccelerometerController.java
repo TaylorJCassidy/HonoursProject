@@ -12,11 +12,14 @@ import com.taylorcassidy.honoursproject.models.Vector3;
 
 public class AccelerometerController {
 
+    private static final String HEADER_LINE = "rawX,rawY,rawZ,filteredX,filteredY,filteredZ";
+
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
     private final FileController fileController;
     private final IFilterFactory filterFactory;
     private SensorEventListener accelerometerListener;
+    private Vector3 initialAcceleration;
 
     public AccelerometerController(SensorManager sensorManager, Context context, IFilterFactory filterFactory) {
         this.sensorManager = sensorManager;
@@ -26,14 +29,16 @@ public class AccelerometerController {
     }
 
     public void registerAccelerometerListener(OnData consumer) {
-        fileController.open();
+        fileController.open(HEADER_LINE);
         accelerometerListener = new SensorEventListener() {
             final FilterHelper filter = new FilterHelper(filterFactory);
             @Override
             public void onSensorChanged(SensorEvent event) {
-                Vector3 acceleration = new Vector3(filter.filter(event.values));
-                fileController.write(acceleration.toCSV());
-                consumer.consume(acceleration);
+                final Vector3 rawAcceleration = new Vector3(event.values);
+                if (initialAcceleration == null) initialAcceleration = rawAcceleration;
+                final Vector3 filteredAcceleration = filter.filter(rawAcceleration.subtract(initialAcceleration));
+                consumer.consume(filteredAcceleration);
+                fileController.write(rawAcceleration.toCSV() + "," + filteredAcceleration.toCSV());
             }
 
             @Override
@@ -47,6 +52,7 @@ public class AccelerometerController {
 
     public void unregisterAccelerometerListener() {
         fileController.close();
+        initialAcceleration = null;
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
     }
 

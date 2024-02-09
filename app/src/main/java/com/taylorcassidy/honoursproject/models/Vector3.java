@@ -27,6 +27,14 @@ public class Vector3 {
         return z;
     }
 
+    public Vector3 subtract(Vector3 vector) {
+        return new Vector3(new float[] {
+                this.x - vector.getX(),
+                this.y - vector.getY(),
+                this.z - vector.getZ()
+        });
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -34,6 +42,6 @@ public class Vector3 {
     }
 
     public String toCSV() {
-        return String.format(Locale.UK, "%f,%f,%f%n", x, y, z);
+        return String.format(Locale.UK, "%f,%f,%f", x, y, z);
     }
 }

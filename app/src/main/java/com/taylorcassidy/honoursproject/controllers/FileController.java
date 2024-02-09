@@ -18,18 +18,23 @@ public class FileController {
         this.context = context;
     }
 
-    public void open() {
+    public void open(String headerline) {
         try {
             final String filename = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "-data.csv";
             outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            if (headerline != null) outputStream.write((headerline+ System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public void open() {
+        this.open(null);
+    }
+
     public void write(String line) {
         try {
-            outputStream.write(line.getBytes(StandardCharsets.UTF_8));
+            outputStream.write((line + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
