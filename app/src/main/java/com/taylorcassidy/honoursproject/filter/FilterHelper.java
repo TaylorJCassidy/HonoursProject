@@ -2,6 +2,7 @@ package com.taylorcassidy.honoursproject.filter;
 
 import com.taylorcassidy.honoursproject.filter.factories.IFilterFactory;
 import com.taylorcassidy.honoursproject.filter.filters.IFilter;
+import com.taylorcassidy.honoursproject.models.Vector3;
 
 public class FilterHelper {
     private final IFilter xFilter;
@@ -20,5 +21,13 @@ public class FilterHelper {
                 yFilter.filter(values[1]),
                 zFilter.filter(values[2])
         };
+    }
+
+    public Vector3 filter(Vector3 vector) {
+        return new Vector3(new float[] {
+                xFilter.filter(vector.getX()),
+                yFilter.filter(vector.getY()),
+                zFilter.filter(vector.getZ())
+        });
     }
 }

@@ -3,28 +3,36 @@ package com.taylorcassidy.honoursproject.controllers;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
-public class FileController {
+public class FileController { //TODO try and fix initial frame skips
     private final Context context;
-    private OutputStream outputStream;
+    private BufferedOutputStream outputStream;
+    private FileOutputStream file;
 
     public FileController(Context context) {
         this.context = context;
     }
 
-    public void open() {
+    public void open(String headerline) {
         try {
             final String filename = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "-data.csv";
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            file = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream = new BufferedOutputStream(file);
+            if (headerline != null) outputStream.write((headerline + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void open() {
+        this.open(null);
     }
 
     public void write(String line) {
@@ -37,11 +45,11 @@ public class FileController {
 
     public void close() {
         try {
-            Toast.makeText(context, "Saved to " + context.getFilesDir(), Toast.LENGTH_LONG).show();
             outputStream.close();
+            file.close();
+            Toast.makeText(context, "Saved to " + context.getFilesDir(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 }
