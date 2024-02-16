@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.filter.factories.FIRFactory;
+import com.taylorcassidy.honoursproject.filter.filters.coefficients.Lowpass;
 
 public class AccelerometerReadout extends Fragment {
 
@@ -35,7 +36,7 @@ public class AccelerometerReadout extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         AccelerometerController accelerometerController =
-                new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory());
+                new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory(Lowpass.COEFFICIENTS));
 
         binding.measure.setOnTouchListener((v, event) -> {
             v.performClick();

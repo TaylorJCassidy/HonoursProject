@@ -9,10 +9,17 @@ public class Vector3 {
     private final float y;
     private final float z;
 
-    public Vector3(float[] vector) {
+    private final long timestamp;
+
+    public Vector3(float[] vector, long timestamp) {
         x = vector[0];
         y = vector[1];
         z = vector[2];
+        this.timestamp = timestamp;
+    }
+
+    public Vector3(float[] vector) {
+        this(vector, 0L);
     }
 
     public float getX() {
@@ -27,18 +34,22 @@ public class Vector3 {
         return z;
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
     public Vector3 subtract(Vector3 vector) {
         return new Vector3(new float[] {
                 this.x - vector.getX(),
                 this.y - vector.getY(),
                 this.z - vector.getZ()
-        });
+        }, timestamp); //use timestamp of vector being subtracted from
     }
 
     @NonNull
     @Override
     public String toString() {
-        return String.format(Locale.UK, "x=%f, y=%f, z=%f", x, y, z);
+        return String.format(Locale.UK, "timestamp=%d, x=%f, y=%f, z=%f", timestamp, x, y, z);
     }
 
     public String toCSV() {
