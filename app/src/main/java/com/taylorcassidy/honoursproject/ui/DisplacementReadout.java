@@ -48,7 +48,7 @@ public class DisplacementReadout extends Fragment {
         AccelerometerController accelerometerController =
                 new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory(Lowpass.COEFFICIENTS));
 
-        DisplacementController displacementController = new DisplacementController(accelerometerController);
+        DisplacementController displacementController = new DisplacementController(accelerometerController, getContext());
 
         binding.measureDisplacement.setOnTouchListener((v, event) -> {
             v.performClick();
