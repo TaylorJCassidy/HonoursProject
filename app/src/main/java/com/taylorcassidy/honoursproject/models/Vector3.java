@@ -11,6 +11,10 @@ public class Vector3 {
 
     private final long timestamp;
 
+    public Vector3() {
+        this(new float[] {0f, 0f, 0f}, 0L);
+    }
+
     public Vector3(float[] vector, long timestamp) {
         x = vector[0];
         y = vector[1];
@@ -38,12 +42,36 @@ public class Vector3 {
         return timestamp;
     }
 
+    public Vector3 add(Vector3 vector) {
+        return new Vector3(new float[] {
+                this.x + vector.getX(),
+                this.y + vector.getY(),
+                this.z + vector.getZ()
+        }, timestamp); //use timestamp of vector being subtracted from
+    }
+
     public Vector3 subtract(Vector3 vector) {
         return new Vector3(new float[] {
                 this.x - vector.getX(),
                 this.y - vector.getY(),
                 this.z - vector.getZ()
         }, timestamp); //use timestamp of vector being subtracted from
+    }
+
+    public Vector3 multiply(Vector3 vector) {
+        return new Vector3(new float[] {
+                this.x * vector.getX(),
+                this.y * vector.getY(),
+                this.z * vector.getZ()
+        }, timestamp); //use timestamp of vector being multiplied from
+    }
+
+    public Vector3 multiply(float scalar) {
+        return new Vector3(new float[] {
+                this.x * scalar,
+                this.y * scalar,
+                this.z * scalar
+        }, timestamp); //use timestamp of vector being multiplied from
     }
 
     @NonNull

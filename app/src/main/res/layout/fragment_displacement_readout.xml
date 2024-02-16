@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+    android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AccelerometerReadout">
+    tools:context=".ui.DisplacementReadout" >
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -23,23 +23,23 @@
             android:id="@+id/x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder acc x" />
+            android:text="placeholder dis x" />
 
         <TextView
             android:id="@+id/y"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder acc y" />
+            android:text="placeholder dis y" />
 
         <TextView
             android:id="@+id/z"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder acc z" />
+            android:text="placeholder dis z" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/measure_acceleration"
+        android:id="@+id/measure_displacement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/measure"
@@ -50,13 +50,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/nav_displacement"
+        android:id="@+id/nav_acceleration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/displacement"
+        android:text="@string/acceleration"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

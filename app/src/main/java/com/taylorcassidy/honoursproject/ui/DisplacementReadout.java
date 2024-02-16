@@ -16,49 +16,52 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.taylorcassidy.honoursproject.R;
-import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
+import com.taylorcassidy.honoursproject.controllers.DisplacementController;
+import com.taylorcassidy.honoursproject.databinding.FragmentDisplacementReadoutBinding;
 import com.taylorcassidy.honoursproject.filter.factories.FIRFactory;
 import com.taylorcassidy.honoursproject.filter.filters.coefficients.Lowpass;
 
-public class AccelerometerReadout extends Fragment {
+public class DisplacementReadout extends Fragment {
 
-    private FragmentAccelerometerReadoutBinding binding;
+    private FragmentDisplacementReadoutBinding binding;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentAccelerometerReadoutBinding.inflate(inflater, container, false);
+        binding = FragmentDisplacementReadoutBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
-    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.navDisplacement.setOnClickListener(l -> NavHostFragment.findNavController(AccelerometerReadout.this)
-                .navigate(R.id.action_accelerometerReadout_to_displacementReadout));
+        binding.navAcceleration.setOnClickListener(l -> NavHostFragment.findNavController(DisplacementReadout.this)
+                .navigate(R.id.action_displacementReadout_to_accelerometerReadout));
 
-        displayAccelerometerReadouts();
+        displayDisplacementReadouts();
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public void displayAccelerometerReadouts() {
+    public void displayDisplacementReadouts() {
         AccelerometerController accelerometerController =
                 new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory(Lowpass.COEFFICIENTS));
 
-        binding.measureAcceleration.setOnTouchListener((v, event) -> {
+        DisplacementController displacementController = new DisplacementController(accelerometerController);
+
+        binding.measureDisplacement.setOnTouchListener((v, event) -> {
             v.performClick();
             switch(event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    accelerometerController.registerAccelerometerListener(acceleration -> {
-                        binding.x.setText(String.valueOf(acceleration.getX()));
-                        binding.y.setText(String.valueOf(acceleration.getY()));
-                        binding.z.setText(String.valueOf(acceleration.getZ()));
+                    displacementController.registerDisplacementListener(displacement -> {
+                        binding.x.setText(String.valueOf(displacement.getX()));
+                        binding.y.setText(String.valueOf(displacement.getY()));
+                        binding.z.setText(String.valueOf(displacement.getZ()));
                     });
                     return true;
                 case MotionEvent.ACTION_UP:
-                    accelerometerController.unregisterAccelerometerListener();
+                    displacementController.unregisterDisplacementController();
                     return true;
             }
             return false;
