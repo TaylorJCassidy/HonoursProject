@@ -1,9 +1,7 @@
 package com.taylorcassidy.honoursproject.ui;
 
-import static android.content.Context.SENSOR_SERVICE;
 
 import android.annotation.SuppressLint;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +16,6 @@ import android.view.ViewGroup;
 import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
-import com.taylorcassidy.honoursproject.filter.factories.FIRFactory;
-import com.taylorcassidy.honoursproject.filter.filters.coefficients.Lowpass;
 
 public class AccelerometerReadout extends Fragment {
 
@@ -44,8 +40,7 @@ public class AccelerometerReadout extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     public void displayAccelerometerReadouts() {
-        AccelerometerController accelerometerController =
-                new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory(Lowpass.COEFFICIENTS));
+        AccelerometerController accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
 
         binding.measureAcceleration.setOnTouchListener((v, event) -> {
             v.performClick();

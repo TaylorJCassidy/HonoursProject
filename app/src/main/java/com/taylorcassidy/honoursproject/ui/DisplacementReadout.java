@@ -1,9 +1,6 @@
 package com.taylorcassidy.honoursproject.ui;
 
-import static android.content.Context.SENSOR_SERVICE;
-
 import android.annotation.SuppressLint;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,8 +16,6 @@ import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.controllers.DisplacementController;
 import com.taylorcassidy.honoursproject.databinding.FragmentDisplacementReadoutBinding;
-import com.taylorcassidy.honoursproject.filter.factories.FIRFactory;
-import com.taylorcassidy.honoursproject.filter.filters.coefficients.Lowpass;
 
 public class DisplacementReadout extends Fragment {
 
@@ -45,8 +40,7 @@ public class DisplacementReadout extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     public void displayDisplacementReadouts() {
-        AccelerometerController accelerometerController =
-                new AccelerometerController((SensorManager) requireActivity().getSystemService(SENSOR_SERVICE), getContext(), new FIRFactory(Lowpass.COEFFICIENTS));
+        AccelerometerController accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
 
         DisplacementController displacementController = new DisplacementController(accelerometerController, getContext());
 
