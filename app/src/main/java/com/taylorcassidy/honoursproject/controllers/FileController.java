@@ -20,19 +20,15 @@ public class FileController { //TODO try and fix initial frame skips
         this.context = context;
     }
 
-    public void open(String headerline) {
+    public void open(String headerline, String name) {
         try {
-            final String filename = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "-data.csv";
+            final String filename = name + "-" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ".csv";
             file = context.openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream = new BufferedOutputStream(file);
             if (headerline != null) outputStream.write((headerline + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void open() {
-        this.open(null);
     }
 
     public void write(String line) {

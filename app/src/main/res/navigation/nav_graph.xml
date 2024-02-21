@@ -9,5 +9,18 @@
         android:id="@+id/accelerometerReadout"
         android:name="com.taylorcassidy.honoursproject.ui.AccelerometerReadout"
         android:label="fragment_accelerometer_readout"
-        tools:layout="@layout/fragment_accelerometer_readout" />
+        tools:layout="@layout/fragment_accelerometer_readout" >
+        <action
+            android:id="@+id/action_accelerometerReadout_to_displacementReadout"
+            app:destination="@id/displacementReadout" />
+    </fragment>
+    <fragment
+        android:id="@+id/displacementReadout"
+        android:name="com.taylorcassidy.honoursproject.ui.DisplacementReadout"
+        android:label="fragment_displacement_readout"
+        tools:layout="@layout/fragment_displacement_readout" >
+        <action
+            android:id="@+id/action_displacementReadout_to_accelerometerReadout"
+            app:destination="@id/accelerometerReadout" />
+    </fragment>
 </navigation>

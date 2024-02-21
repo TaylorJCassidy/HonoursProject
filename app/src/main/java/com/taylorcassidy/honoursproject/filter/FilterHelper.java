@@ -28,6 +28,6 @@ public class FilterHelper {
                 xFilter.filter(vector.getX()),
                 yFilter.filter(vector.getY()),
                 zFilter.filter(vector.getZ())
-        });
+        }, vector.getTimestamp());
     }
 }

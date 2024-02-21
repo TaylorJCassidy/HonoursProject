@@ -31,7 +31,7 @@ public class AccelerometerController {
     }
 
     public void registerAccelerometerListener(Consumer<Vector3> consumer) {
-        fileController.open(HEADER_LINE);
+        fileController.open(HEADER_LINE, "acceleration");
         accelerometerListener = new SensorEventListener() {
             final FilterHelper filter = new FilterHelper(filterFactory);
             @Override
