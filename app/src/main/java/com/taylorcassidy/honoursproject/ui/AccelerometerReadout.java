@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
+import com.taylorcassidy.honoursproject.filter.FilterMappings;
+import com.taylorcassidy.honoursproject.filter.factories.IFilterFactory;
+import com.taylorcassidy.honoursproject.helpers.SpinnerHelper;
 
 public class AccelerometerReadout extends Fragment {
 
@@ -35,11 +38,18 @@ public class AccelerometerReadout extends Fragment {
         binding.navDisplacement.setOnClickListener(l -> NavHostFragment.findNavController(AccelerometerReadout.this)
                 .navigate(R.id.action_accelerometerReadout_to_displacementReadout));
 
+        populateSpinner();
         displayAccelerometerReadouts();
     }
 
+    private void populateSpinner() {
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), FilterMappings.keys(), (item) -> {
+            IFilterFactory factory = FilterMappings.get(item);
+        });
+    }
+
     @SuppressLint("ClickableViewAccessibility")
-    public void displayAccelerometerReadouts() {
+    private void displayAccelerometerReadouts() {
         AccelerometerController accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
 
         binding.measureAcceleration.setOnTouchListener((v, event) -> {
