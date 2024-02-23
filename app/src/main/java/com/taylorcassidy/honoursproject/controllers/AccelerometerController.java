@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.taylorcassidy.honoursproject.filter.FilterFactory;
-import com.taylorcassidy.honoursproject.filter.FilterHelper;
+import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
 import java.util.function.Consumer;
@@ -33,7 +33,7 @@ public class AccelerometerController {
     public void registerAccelerometerListener(Consumer<Vector3> consumer) {
         fileController.open(HEADER_LINE, "acceleration");
         accelerometerListener = new SensorEventListener() {
-            final FilterHelper filter = new FilterHelper(filterType);
+            final Vector3FilterChainer filter = new Vector3FilterChainer.Builder().withFilterType(filterType).build();
             @Override
             public void onSensorChanged(SensorEvent event) {
                 final Vector3 rawAcceleration = new Vector3(event.values, event.timestamp);
