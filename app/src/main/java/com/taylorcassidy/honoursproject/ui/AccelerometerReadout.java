@@ -23,6 +23,7 @@ import com.taylorcassidy.honoursproject.helpers.SpinnerHelper;
 public class AccelerometerReadout extends Fragment {
 
     private FragmentAccelerometerReadoutBinding binding;
+    private AccelerometerController accelerometerController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class AccelerometerReadout extends Fragment {
         binding.navDisplacement.setOnClickListener(l -> NavHostFragment.findNavController(AccelerometerReadout.this)
                 .navigate(R.id.action_accelerometerReadout_to_displacementReadout));
 
+        accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
+
         populateSpinner();
         displayAccelerometerReadouts();
     }
@@ -45,13 +48,12 @@ public class AccelerometerReadout extends Fragment {
     private void populateSpinner() {
         SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), FilterMappings.keys(), (item) -> {
             IFilterFactory factory = FilterMappings.get(item);
+            accelerometerController.setFilterFactory(factory);
         });
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void displayAccelerometerReadouts() {
-        AccelerometerController accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
-
         binding.measureAcceleration.setOnTouchListener((v, event) -> {
             v.performClick();
             switch(event.getAction()) {

@@ -14,12 +14,12 @@ import java.util.function.Consumer;
 
 public class AccelerometerController {
 
-    private static final String HEADER_LINE = "rawX,rawY,rawZ,filteredX,filteredY,filteredZ";
+    private static final String HEADER_LINE = "filteredX,filteredY,filteredZ";
 
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
     private final FileController fileController;
-    private final IFilterFactory filterFactory;
+    private IFilterFactory filterFactory;
     private SensorEventListener accelerometerListener;
     private Vector3 initialAcceleration;
 
@@ -40,7 +40,7 @@ public class AccelerometerController {
                 if (initialAcceleration == null) initialAcceleration = rawAcceleration;
                 final Vector3 filteredAcceleration = filter.filter(rawAcceleration.subtract(initialAcceleration));
                 consumer.accept(filteredAcceleration);
-                fileController.write(rawAcceleration.toCSV() + "," + filteredAcceleration.toCSV());
+                fileController.write(filteredAcceleration.toCSV());
             }
 
             @Override
@@ -56,5 +56,9 @@ public class AccelerometerController {
         fileController.close();
         initialAcceleration = null;
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
+    }
+
+    public void setFilterFactory(IFilterFactory filterFactory) {
+        this.filterFactory = filterFactory;
     }
 }
