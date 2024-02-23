@@ -16,9 +16,10 @@ import android.view.ViewGroup;
 import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
-import com.taylorcassidy.honoursproject.filter.FilterMappings;
-import com.taylorcassidy.honoursproject.filter.factories.IFilterFactory;
+import com.taylorcassidy.honoursproject.filter.FilterFactory;
 import com.taylorcassidy.honoursproject.helpers.SpinnerHelper;
+
+import java.util.List;
 
 public class AccelerometerReadout extends Fragment {
 
@@ -46,10 +47,7 @@ public class AccelerometerReadout extends Fragment {
     }
 
     private void populateSpinner() {
-        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), FilterMappings.keys(), (item) -> {
-            IFilterFactory factory = FilterMappings.get(item);
-            accelerometerController.setFilterFactory(factory);
-        });
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), List.of(FilterFactory.FilterTypes.values()), accelerometerController::setFilterType);
     }
 
     @SuppressLint("ClickableViewAccessibility")
