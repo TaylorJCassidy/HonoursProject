@@ -47,7 +47,7 @@ public class Vector3 {
                 this.x + vector.getX(),
                 this.y + vector.getY(),
                 this.z + vector.getZ()
-        }, timestamp); //use timestamp of vector being subtracted from
+        }, timestamp); //use timestamp of vector being added to
     }
 
     public Vector3 subtract(Vector3 vector) {
