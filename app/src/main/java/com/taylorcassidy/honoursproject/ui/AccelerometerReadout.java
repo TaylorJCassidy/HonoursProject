@@ -58,7 +58,7 @@ public class AccelerometerReadout extends Fragment {
     }
 
     private void populateSpinner() {
-        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), List.of(FilterFactory.FilterTypes.values()), accelerometerController::setFilterType);
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), List.of(FilterFactory.FilterTypes.values()), accelerometerController::setFilterType, accelerometerController.getFilterType());
     }
 
     @SuppressLint("ClickableViewAccessibility")

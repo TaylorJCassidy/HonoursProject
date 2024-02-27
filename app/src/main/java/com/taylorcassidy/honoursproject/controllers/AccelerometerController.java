@@ -49,6 +49,10 @@ public class AccelerometerController {
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
     }
 
+    public FilterFactory.FilterTypes getFilterType() {
+        return filterType;
+    }
+
     public void setFilterType(FilterFactory.FilterTypes filterType) {
         this.filterType = filterType;
     }
