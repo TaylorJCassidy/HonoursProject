@@ -87,5 +87,6 @@ public class DisplacementReadout extends Fragment {
         binding.x.setText(String.valueOf(displacement.getX()));
         binding.y.setText(String.valueOf(displacement.getY()));
         binding.z.setText(String.valueOf(displacement.getZ()));
+        binding.total.setText(String.valueOf(displacement.magnitude()));
     }
 }

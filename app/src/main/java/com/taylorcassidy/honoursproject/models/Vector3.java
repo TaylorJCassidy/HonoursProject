@@ -74,6 +74,13 @@ public class Vector3 {
         }, timestamp); //use timestamp of vector being multiplied from
     }
 
+    public float magnitude() {
+        final float x2 = x*x;
+        final float y2 = y*y;
+        final float z2 = z*z;
+        return (float) Math.sqrt(x2 + y2 + z2);
+    }
+
     @NonNull
     @Override
     public String toString() {
