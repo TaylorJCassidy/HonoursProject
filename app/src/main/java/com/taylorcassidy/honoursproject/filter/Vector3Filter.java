@@ -3,23 +3,15 @@ package com.taylorcassidy.honoursproject.filter;
 import com.taylorcassidy.honoursproject.filter.filters.IFilter;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
-public class FilterHelper {
+public class Vector3Filter {
     private final IFilter xFilter;
     private final IFilter yFilter;
     private final IFilter zFilter;
 
-    public FilterHelper(FilterFactory.FilterTypes filterType) {
+    public Vector3Filter(FilterFactory.FilterTypes filterType) {
         xFilter = FilterFactory.createFilter(filterType);
         yFilter = FilterFactory.createFilter(filterType);
         zFilter = FilterFactory.createFilter(filterType);
-    }
-
-    public float[] filter(float[] values) {
-        return new float[] {
-                xFilter.filter(values[0]),
-                yFilter.filter(values[1]),
-                zFilter.filter(values[2])
-        };
     }
 
     public Vector3 filter(Vector3 vector) {

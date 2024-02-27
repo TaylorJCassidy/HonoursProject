@@ -47,7 +47,7 @@ public class Vector3 {
                 this.x + vector.getX(),
                 this.y + vector.getY(),
                 this.z + vector.getZ()
-        }, timestamp); //use timestamp of vector being subtracted from
+        }, timestamp); //use timestamp of vector being added to
     }
 
     public Vector3 subtract(Vector3 vector) {
@@ -72,6 +72,13 @@ public class Vector3 {
                 this.y * scalar,
                 this.z * scalar
         }, timestamp); //use timestamp of vector being multiplied from
+    }
+
+    public float magnitude() {
+        final float x2 = x*x;
+        final float y2 = y*y;
+        final float z2 = z*z;
+        return (float) Math.sqrt(x2 + y2 + z2);
     }
 
     @NonNull
