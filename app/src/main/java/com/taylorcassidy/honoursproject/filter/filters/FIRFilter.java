@@ -1,13 +1,13 @@
 package com.taylorcassidy.honoursproject.filter.filters;
 
-public class FIR implements IFilter {
+public class FIRFilter implements IFilter {
 
     private final float[] buffer;
     private final int bufferSize;
     private final float[] coefficients;
     private int bufferPosition = 0;
 
-    public FIR(float[] coefficients) {
+    public FIRFilter(float[] coefficients) {
         bufferSize = coefficients.length;
         buffer = new float[bufferSize];
         this.coefficients = coefficients;
