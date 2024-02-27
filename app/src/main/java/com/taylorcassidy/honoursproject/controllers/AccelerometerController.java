@@ -9,24 +9,26 @@ import com.taylorcassidy.honoursproject.filter.FilterFactory;
 import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class AccelerometerController {
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
-    private FilterFactory.FilterTypes filterType;
+
+    private List<FilterFactory.FilterTypes> filterTypes;
     private SensorEventListener accelerometerListener;
     private Vector3 initialAcceleration;
 
-    public AccelerometerController(SensorManager sensorManager, FilterFactory.FilterTypes filterType) {
+    public AccelerometerController(SensorManager sensorManager, List<FilterFactory.FilterTypes> filterTypes) {
         this.sensorManager = sensorManager;
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        this.filterType = filterType;
+        this.filterTypes = filterTypes;
     }
 
     public void registerAccelerometerListener(Consumer<Vector3> consumer) {
         accelerometerListener = new SensorEventListener() {
-            final Vector3FilterChainer filter = new Vector3FilterChainer.Builder().withFilterType(filterType).build();
+            final Vector3FilterChainer filter = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
             @Override
             public void onSensorChanged(SensorEvent event) {
                 final Vector3 rawAcceleration = new Vector3(event.values, event.timestamp);
@@ -49,11 +51,12 @@ public class AccelerometerController {
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
     }
 
-    public FilterFactory.FilterTypes getFilterType() {
-        return filterType;
+    public List<FilterFactory.FilterTypes> getFilterTypes() {
+        return filterTypes;
     }
 
-    public void setFilterType(FilterFactory.FilterTypes filterType) {
-        this.filterType = filterType;
+    public void setFilterTypes(List<FilterFactory.FilterTypes> filterTypes) {
+        this.filterTypes = filterTypes;
     }
+
 }

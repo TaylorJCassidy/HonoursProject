@@ -9,6 +9,8 @@ import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.databinding.ActivityMainBinding;
 import com.taylorcassidy.honoursproject.filter.FilterFactory;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        accelerometerController = new AccelerometerController((SensorManager) getSystemService(SENSOR_SERVICE), FilterFactory.FilterTypes.NONE);
+        accelerometerController = new AccelerometerController((SensorManager) getSystemService(SENSOR_SERVICE), Arrays.asList(FilterFactory.FilterTypes.NONE, FilterFactory.FilterTypes.NONE));
     }
 
     public AccelerometerController getAccelerationController() {
