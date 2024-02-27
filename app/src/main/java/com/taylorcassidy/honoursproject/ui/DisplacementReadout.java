@@ -15,11 +15,17 @@ import android.view.ViewGroup;
 import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.controllers.DisplacementController;
+import com.taylorcassidy.honoursproject.controllers.FileController;
 import com.taylorcassidy.honoursproject.databinding.FragmentDisplacementReadoutBinding;
+import com.taylorcassidy.honoursproject.models.Vector3;
 
 public class DisplacementReadout extends Fragment {
 
+    private static final String HEADER_LINE = "displacementX, displacementY, displacementZ";
+
     private FragmentDisplacementReadoutBinding binding;
+    private FileController fileController;
+    private boolean writeToFile;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -35,30 +41,51 @@ public class DisplacementReadout extends Fragment {
         binding.navAcceleration.setOnClickListener(l -> NavHostFragment.findNavController(DisplacementReadout.this)
                 .navigate(R.id.action_displacementReadout_to_accelerometerReadout));
 
+        fileController = new FileController(getContext());
+
+        bindWriteToFileSwitch();
         displayDisplacementReadouts();
+    }
+
+    private void bindWriteToFileSwitch() {
+        binding.recordDisplacement.setOnCheckedChangeListener((buttonView, isChecked) -> writeToFile = isChecked);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public void displayDisplacementReadouts() {
         AccelerometerController accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
 
-        DisplacementController displacementController = new DisplacementController(accelerometerController, getContext());
+        DisplacementController displacementController = new DisplacementController(accelerometerController);
 
         binding.measureDisplacement.setOnTouchListener((v, event) -> {
             v.performClick();
             switch(event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    displacementController.registerDisplacementListener(displacement -> {
-                        binding.x.setText(String.valueOf(displacement.getX()));
-                        binding.y.setText(String.valueOf(displacement.getY()));
-                        binding.z.setText(String.valueOf(displacement.getZ()));
-                    });
+                    if (writeToFile) {
+                        fileController.open(HEADER_LINE, "displacement");
+                        displacementController.registerDisplacementListener(this::bindUIWithFileWrite);
+                    }
+                    else {
+                        displacementController.registerDisplacementListener(this::bindUI);
+                    }
                     return true;
                 case MotionEvent.ACTION_UP:
                     displacementController.unregisterDisplacementController();
+                    if (writeToFile) fileController.close();
                     return true;
             }
             return false;
         });
+    }
+
+    private void bindUIWithFileWrite(Vector3 displacement) {
+        fileController.write(displacement.toCSV());
+        bindUI(displacement);
+    }
+
+    private void bindUI(Vector3 displacement) {
+        binding.x.setText(String.valueOf(displacement.getX()));
+        binding.y.setText(String.valueOf(displacement.getY()));
+        binding.z.setText(String.valueOf(displacement.getZ()));
     }
 }
