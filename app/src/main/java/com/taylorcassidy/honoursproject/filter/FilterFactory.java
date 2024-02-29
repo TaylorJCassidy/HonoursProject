@@ -4,13 +4,15 @@ import com.taylorcassidy.honoursproject.filter.filters.CutoffFilter;
 import com.taylorcassidy.honoursproject.filter.filters.FIRFilter;
 import com.taylorcassidy.honoursproject.filter.filters.IFilter;
 import com.taylorcassidy.honoursproject.filter.filters.RawFilter;
+import com.taylorcassidy.honoursproject.filter.filters.SlidingWindowFilter;
 import com.taylorcassidy.honoursproject.filter.filters.coefficients.Lowpass;
 
 public class FilterFactory {
     public enum FilterTypes {
         NONE,
         LOW_PASS,
-        CUTOFF
+        CUTOFF,
+        SLIDING_WINDOW
     }
 
     public static IFilter createFilter(FilterTypes filterType) {
@@ -22,6 +24,8 @@ public class FilterFactory {
                 return new FIRFilter(Lowpass.COEFFICIENTS);
             case CUTOFF:
                 return new CutoffFilter();
+            case SLIDING_WINDOW:
+                return new SlidingWindowFilter(25);
         }
     }
 }
