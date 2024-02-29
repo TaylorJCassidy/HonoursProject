@@ -9,7 +9,7 @@ import com.taylorcassidy.honoursproject.filter.FilterFactory;
 import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class AccelerometerController {
     private final SensorManager sensorManager;
@@ -17,6 +17,7 @@ public class AccelerometerController {
     private FilterFactory.FilterTypes filterType;
     private SensorEventListener accelerometerListener;
     private Vector3 initialAcceleration;
+    private long previousTimestamp;
 
     public AccelerometerController(SensorManager sensorManager, FilterFactory.FilterTypes filterType) {
         this.sensorManager = sensorManager;
@@ -24,15 +25,21 @@ public class AccelerometerController {
         this.filterType = filterType;
     }
 
-    public void registerAccelerometerListener(Consumer<Vector3> consumer) {
+    public void registerAccelerometerListener(BiConsumer<Vector3, Long> consumer) {
         accelerometerListener = new SensorEventListener() {
-            final Vector3FilterChainer filter = new Vector3FilterChainer.Builder().withFilterType(filterType).build();
+            final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder().withFilterType(filterType).build();
             @Override
             public void onSensorChanged(SensorEvent event) {
                 final Vector3 rawAcceleration = new Vector3(event.values, event.timestamp);
-                if (initialAcceleration == null) initialAcceleration = rawAcceleration;
-                final Vector3 filteredAcceleration = filter.filter(rawAcceleration.subtract(initialAcceleration));
-                consumer.accept(filteredAcceleration);
+                if (initialAcceleration == null) {
+                    initialAcceleration = rawAcceleration;
+                    previousTimestamp = event.timestamp; //if first reading, make deltaT 0
+                }
+
+                final Vector3 filteredAcceleration = filterChain.filter(rawAcceleration.subtract(initialAcceleration));
+                final long deltaT = event.timestamp - previousTimestamp;
+                consumer.accept(filteredAcceleration, deltaT);
+                previousTimestamp = event.timestamp;
             }
 
             @Override

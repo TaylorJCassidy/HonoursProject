@@ -42,8 +42,8 @@ public class AccelerometerReadout extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.navDisplacement.setOnClickListener(l -> NavHostFragment.findNavController(AccelerometerReadout.this)
-                .navigate(R.id.action_accelerometerReadout_to_displacementReadout));
+        binding.navAccVel.setOnClickListener(l -> NavHostFragment.findNavController(AccelerometerReadout.this)
+                .navigate(R.id.action_accelerometerReadout_to_velocityReadout));
 
         accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
         fileController = new FileController(getContext());
@@ -84,12 +84,12 @@ public class AccelerometerReadout extends Fragment {
         });
     }
 
-    private void bindUIWithFileWrite(Vector3 acceleration) {
+    private void bindUIWithFileWrite(Vector3 acceleration, Long deltaT) {
         fileController.write(acceleration.toCSV());
-        bindUI(acceleration);
+        bindUI(acceleration, deltaT);
     }
 
-    private void bindUI(Vector3 acceleration) {
+    private void bindUI(Vector3 acceleration, Long deltaT) {
         binding.x.setText(String.valueOf(acceleration.getX()));
         binding.y.setText(String.valueOf(acceleration.getY()));
         binding.z.setText(String.valueOf(acceleration.getZ()));

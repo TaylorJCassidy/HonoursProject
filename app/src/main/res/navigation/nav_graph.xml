@@ -11,8 +11,8 @@
         android:label="fragment_accelerometer_readout"
         tools:layout="@layout/fragment_accelerometer_readout" >
         <action
-            android:id="@+id/action_accelerometerReadout_to_displacementReadout"
-            app:destination="@id/displacementReadout" />
+            android:id="@+id/action_accelerometerReadout_to_velocityReadout"
+            app:destination="@id/velocityReadout" />
     </fragment>
     <fragment
         android:id="@+id/displacementReadout"
@@ -20,7 +20,19 @@
         android:label="fragment_displacement_readout"
         tools:layout="@layout/fragment_displacement_readout" >
         <action
-            android:id="@+id/action_displacementReadout_to_accelerometerReadout"
+            android:id="@+id/action_displacementReadout_to_velocityReadout"
+            app:destination="@id/velocityReadout" />
+    </fragment>
+    <fragment
+        android:id="@+id/velocityReadout"
+        android:name="com.taylorcassidy.honoursproject.ui.VelocityReadout"
+        android:label="fragment_velocity_readout"
+        tools:layout="@layout/fragment_velocity_readout" >
+        <action
+            android:id="@+id/action_velocityReadout_to_displacementReadout"
+            app:destination="@id/displacementReadout" />
+        <action
+            android:id="@+id/action_velocityReadout_to_accelerometerReadout"
             app:destination="@id/accelerometerReadout" />
     </fragment>
 </navigation>

@@ -2,10 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AccelerometerReadout">
+    tools:context=".ui.VelocityReadout" >
+
+    <Button
+        android:id="@+id/nav_vel_acc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/acceleration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -23,23 +33,23 @@
             android:id="@+id/x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder acc x" />
+            android:text="placeholder vel x" />
 
         <TextView
             android:id="@+id/y"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder acc y" />
+            android:text="placeholder vel y" />
 
         <TextView
             android:id="@+id/z"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder acc z" />
+            android:text="placeholder vel z" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/measure_acceleration"
+        android:id="@+id/measure_velocity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/measure"
@@ -50,42 +60,13 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/nav_acc_vel"
+        android:id="@+id/nav_vel_dis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/velocity"
+        android:text="@string/displacement"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/filterText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/filter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/filterSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/filterText"
-        app:layout_constraintStart_toEndOf="@+id/filterText"
-        app:layout_constraintTop_toTopOf="@+id/filterText"
-        app:layout_constraintVertical_bias="0.533" />
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/recordAcceleration"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:text="@string/log_to_file"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/measure_acceleration" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

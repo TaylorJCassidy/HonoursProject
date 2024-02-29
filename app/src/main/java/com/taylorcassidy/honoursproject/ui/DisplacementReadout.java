@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.taylorcassidy.honoursproject.R;
-import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.controllers.DisplacementController;
 import com.taylorcassidy.honoursproject.controllers.FileController;
+import com.taylorcassidy.honoursproject.controllers.VelocityController;
 import com.taylorcassidy.honoursproject.databinding.FragmentDisplacementReadoutBinding;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
@@ -38,8 +38,8 @@ public class DisplacementReadout extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.navAcceleration.setOnClickListener(l -> NavHostFragment.findNavController(DisplacementReadout.this)
-                .navigate(R.id.action_displacementReadout_to_accelerometerReadout));
+        binding.navDisVel.setOnClickListener(l -> NavHostFragment.findNavController(DisplacementReadout.this)
+                .navigate(R.id.action_displacementReadout_to_velocityReadout));
 
         fileController = new FileController(getContext());
 
@@ -53,9 +53,9 @@ public class DisplacementReadout extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     public void displayDisplacementReadouts() {
-        AccelerometerController accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
+        VelocityController velocityController = ((MainActivity) getActivity()).getVelocityController();
 
-        DisplacementController displacementController = new DisplacementController(accelerometerController);
+        DisplacementController displacementController = new DisplacementController(velocityController);
 
         binding.measureDisplacement.setOnTouchListener((v, event) -> {
             v.performClick();

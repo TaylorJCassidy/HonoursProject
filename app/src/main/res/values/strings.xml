@@ -3,6 +3,7 @@
     <string name="measure">Measure</string>
     <string name="displacement">Displacement</string>
     <string name="acceleration">Acceleration</string>
+    <string name="velocity">Velocity</string>
     <string name="filter">Filter</string>
     <string name="log_to_file">Log to file</string>
 </resources>
