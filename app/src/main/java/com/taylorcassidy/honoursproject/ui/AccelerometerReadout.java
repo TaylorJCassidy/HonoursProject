@@ -49,7 +49,7 @@ public class AccelerometerReadout extends Fragment {
         fileController = new FileController(getContext());
 
         bindWriteToFileSwitch();
-        populateSpinner();
+        populateSpinners();
         displayAccelerometerReadouts();
     }
 
@@ -57,8 +57,9 @@ public class AccelerometerReadout extends Fragment {
         binding.recordAcceleration.setOnCheckedChangeListener((buttonView, isChecked) -> writeToFile = isChecked);
     }
 
-    private void populateSpinner() {
-        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner), List.of(FilterFactory.FilterTypes.values()), accelerometerController::setFilterType, accelerometerController.getFilterType());
+    private void populateSpinners() {
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), List.of(FilterFactory.FilterTypes.values()), (filter) -> accelerometerController.getFilterTypes().set(0, filter), accelerometerController.getFilterTypes().get(0));
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner2), List.of(FilterFactory.FilterTypes.values()), (filter) -> accelerometerController.getFilterTypes().set(1, filter), accelerometerController.getFilterTypes().get(1));
     }
 
     @SuppressLint("ClickableViewAccessibility")
