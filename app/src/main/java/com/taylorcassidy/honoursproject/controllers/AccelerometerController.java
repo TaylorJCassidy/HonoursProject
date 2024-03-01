@@ -15,21 +15,26 @@ import java.util.function.BiConsumer;
 public class AccelerometerController {
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
+    private final FileController fileController;
 
     private List<FilterFactory.FilterTypes> filterTypes;
     private SensorEventListener accelerometerListener;
     private Vector3 initialAcceleration;
     private long previousTimestamp;
+    private boolean shouldLogToFile = false;
 
-    public AccelerometerController(SensorManager sensorManager, List<FilterFactory.FilterTypes> filterTypes) {
+    public AccelerometerController(SensorManager sensorManager, FileController fileController, List<FilterFactory.FilterTypes> filterTypes) {
         this.sensorManager = sensorManager;
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        this.fileController = fileController;
         this.filterTypes = filterTypes;
     }
 
     public void registerAccelerometerListener(BiConsumer<Vector3, Long> consumer) {
+        final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
+        if (shouldLogToFile) fileController.open("accX,accY,accZ", "acceleration");
+
         accelerometerListener = new SensorEventListener() {
-            final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
             @Override
             public void onSensorChanged(SensorEvent event) {
                 final Vector3 rawAcceleration = new Vector3(event.values, event.timestamp);
@@ -41,6 +46,7 @@ public class AccelerometerController {
                 final Vector3 filteredAcceleration = filterChain.filter(rawAcceleration.subtract(initialAcceleration));
                 final long deltaT = event.timestamp - previousTimestamp;
                 consumer.accept(filteredAcceleration, deltaT);
+                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV());
                 previousTimestamp = event.timestamp;
             }
 
@@ -56,6 +62,7 @@ public class AccelerometerController {
     public void unregisterAccelerometerListener() {
         initialAcceleration = null;
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
+        if (shouldLogToFile) fileController.close();
     }
 
     public List<FilterFactory.FilterTypes> getFilterTypes() {
@@ -64,5 +71,13 @@ public class AccelerometerController {
 
     public void setFilterTypes(List<FilterFactory.FilterTypes> filterTypes) {
         this.filterTypes = filterTypes;
+    }
+
+    public boolean isShouldLogToFile() {
+        return shouldLogToFile;
+    }
+
+    public void setShouldLogToFile(boolean shouldLogToFile) {
+        this.shouldLogToFile = shouldLogToFile;
     }
 }

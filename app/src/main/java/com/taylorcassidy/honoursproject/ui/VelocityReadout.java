@@ -46,10 +46,16 @@ public class VelocityReadout extends Fragment {
 
         displayVelocityReadouts();
         populateSpinner();
+        bindWriteToFileSwitch();
     }
 
     private void populateSpinner() {
         SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), List.of(FilterFactory.FilterTypes.values()), (filter) -> velocityController.getFilterTypes().set(0, filter), velocityController.getFilterTypes().get(0));
+    }
+
+    private void bindWriteToFileSwitch() {
+        binding.recordVelocity.setChecked(velocityController.isShouldLogToFile());
+        binding.recordVelocity.setOnCheckedChangeListener((buttonView, isChecked) -> velocityController.setShouldLogToFile(isChecked));
     }
 
     @SuppressLint("ClickableViewAccessibility")

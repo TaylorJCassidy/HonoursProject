@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.taylorcassidy.honoursproject.R;
-import com.taylorcassidy.honoursproject.controllers.FileController;
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.filter.FilterFactory;
@@ -24,12 +23,9 @@ import com.taylorcassidy.honoursproject.models.Vector3;
 import java.util.List;
 
 public class AccelerometerReadout extends Fragment {
-    private static final String HEADER_LINE = "filteredX,filteredY,filteredZ";
 
     private FragmentAccelerometerReadoutBinding binding;
     private AccelerometerController accelerometerController;
-    private FileController fileController;
-    private boolean writeToFile;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +42,6 @@ public class AccelerometerReadout extends Fragment {
                 .navigate(R.id.action_accelerometerReadout_to_velocityReadout));
 
         accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
-        fileController = new FileController(getContext());
 
         bindWriteToFileSwitch();
         populateSpinners();
@@ -54,7 +49,8 @@ public class AccelerometerReadout extends Fragment {
     }
 
     private void bindWriteToFileSwitch() {
-        binding.recordAcceleration.setOnCheckedChangeListener((buttonView, isChecked) -> writeToFile = isChecked);
+        binding.recordAcceleration.setChecked(accelerometerController.isShouldLogToFile());
+        binding.recordAcceleration.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setShouldLogToFile(isChecked));
     }
 
     private void populateSpinners() {
@@ -68,26 +64,14 @@ public class AccelerometerReadout extends Fragment {
             v.performClick();
             switch(event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    if (writeToFile) {
-                        fileController.open(HEADER_LINE, "acceleration");
-                        accelerometerController.registerAccelerometerListener(this::bindUIWithFileWrite);
-                    }
-                    else {
-                        accelerometerController.registerAccelerometerListener(this::bindUI);
-                    }
+                    accelerometerController.registerAccelerometerListener(this::bindUI);
                     return true;
                 case MotionEvent.ACTION_UP:
                     accelerometerController.unregisterAccelerometerListener();
-                    if (writeToFile) fileController.close();
                     return true;
             }
             return false;
         });
-    }
-
-    private void bindUIWithFileWrite(Vector3 acceleration, Long deltaT) {
-        fileController.write(acceleration.toCSV());
-        bindUI(acceleration, deltaT);
     }
 
     private void bindUI(Vector3 acceleration, Long deltaT) {
