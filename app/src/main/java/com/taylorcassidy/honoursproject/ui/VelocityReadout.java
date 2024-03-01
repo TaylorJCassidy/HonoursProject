@@ -15,7 +15,11 @@ import android.view.ViewGroup;
 import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.controllers.VelocityController;
 import com.taylorcassidy.honoursproject.databinding.FragmentVelocityReadoutBinding;
+import com.taylorcassidy.honoursproject.filter.FilterFactory;
+import com.taylorcassidy.honoursproject.helpers.SpinnerHelper;
 import com.taylorcassidy.honoursproject.models.Vector3;
+
+import java.util.List;
 
 public class VelocityReadout extends Fragment {
 
@@ -41,6 +45,11 @@ public class VelocityReadout extends Fragment {
         velocityController = ((MainActivity) getActivity()).getVelocityController();
 
         displayVelocityReadouts();
+        populateSpinner();
+    }
+
+    private void populateSpinner() {
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), List.of(FilterFactory.FilterTypes.values()), (filter) -> velocityController.getFilterTypes().set(0, filter), velocityController.getFilterTypes().get(0));
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -52,7 +61,7 @@ public class VelocityReadout extends Fragment {
                     velocityController.registerVelocityListener(this::bindUI);
                     return true;
                 case MotionEvent.ACTION_UP:
-//                    velocityController.unregisterVelocityListener();
+                    velocityController.unregisterVelocityListener();
                     return true;
             }
             return false;

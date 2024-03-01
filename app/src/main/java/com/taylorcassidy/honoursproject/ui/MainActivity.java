@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         accelerometerController = new AccelerometerController((SensorManager) getSystemService(SENSOR_SERVICE), Arrays.asList(FilterFactory.FilterTypes.NONE, FilterFactory.FilterTypes.NONE));
-        velocityController = new VelocityController(accelerometerController);
+        velocityController = new VelocityController(accelerometerController, Arrays.asList(FilterFactory.FilterTypes.NONE));
     }
 
     public AccelerometerController getAccelerationController() {

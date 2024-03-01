@@ -1,17 +1,17 @@
 package com.taylorcassidy.honoursproject.filter.filters;
 
 public class SlidingWindowFilter implements IFilter {
-
-    private final static float STD_CUTOFF = 0.05f;
-    private final static float MEAN_CUTOFF = 0.1f;
-
     private final float[] buffer;
     private final int bufferSize;
     private int bufferPosition = 0;
+    private final float stdCutoff;
+    private final float meanCutoff;
 
-    public SlidingWindowFilter(int windowSize) {
+    public SlidingWindowFilter(int windowSize, float stdCutoff, float meanCutoff) {
         buffer = new float[windowSize];
         bufferSize = windowSize;
+        this.stdCutoff = stdCutoff;
+        this.meanCutoff = meanCutoff;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SlidingWindowFilter implements IFilter {
         }
         final float std = (float) Math.sqrt(variance / bufferSize);
 
-        if (Math.abs(std) < STD_CUTOFF && mean < MEAN_CUTOFF) return 0;
+        if (std < stdCutoff && Math.abs(mean) < meanCutoff) return 0f;
         return value;
     }
 }

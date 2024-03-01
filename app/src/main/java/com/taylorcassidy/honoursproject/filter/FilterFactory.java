@@ -12,7 +12,8 @@ public class FilterFactory {
         NONE,
         LOW_PASS,
         CUTOFF,
-        SLIDING_WINDOW
+        SLIDING_WINDOW_ACC,
+        SLIDING_WINDOW_VEC
     }
 
     public static IFilter createFilter(FilterTypes filterType) {
@@ -24,8 +25,10 @@ public class FilterFactory {
                 return new FIRFilter(Lowpass.COEFFICIENTS);
             case CUTOFF:
                 return new CutoffFilter();
-            case SLIDING_WINDOW:
-                return new SlidingWindowFilter(25);
+            case SLIDING_WINDOW_ACC:
+                return new SlidingWindowFilter(25, 0.05f, 0.1f);
+            case SLIDING_WINDOW_VEC:
+                return new SlidingWindowFilter(25, 0.0001f, Float.MAX_VALUE);
         }
     }
 }
