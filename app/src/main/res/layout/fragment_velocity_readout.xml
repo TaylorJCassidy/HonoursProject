@@ -2,10 +2,42 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout2"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DisplacementReadout">
+    tools:context=".ui.VelocityReadout">
+
+    <LinearLayout
+        android:id="@+id/filter1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter" />
+
+        <Spinner
+            android:id="@+id/filterSpinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/nav_vel_acc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/acceleration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -23,29 +55,23 @@
             android:id="@+id/x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder dis x" />
+            android:text="placeholder vel x" />
 
         <TextView
             android:id="@+id/y"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder dis y" />
+            android:text="placeholder vel y" />
 
         <TextView
             android:id="@+id/z"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="placeholder dis z" />
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="placeholder total" />
+            android:text="placeholder vel z" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/measure_displacement"
+        android:id="@+id/measure_velocity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/measure"
@@ -55,23 +81,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <Button
-        android:id="@+id/nav_dis_vel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/velocity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/recordDisplacement"
+        android:id="@+id/recordVelocity"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_weight="1"
         android:text="@string/log_to_file"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/measure_displacement" />
+        app:layout_constraintTop_toBottomOf="@+id/measure_velocity" />
+
+    <Button
+        android:id="@+id/nav_vel_dis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/displacement"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
