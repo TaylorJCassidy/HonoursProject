@@ -32,7 +32,7 @@ public class AccelerometerController {
 
     public void registerAccelerometerListener(BiConsumer<Vector3, Long> consumer) {
         final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
-        if (shouldLogToFile) fileController.open("accX,accY,accZ", "acceleration");
+        if (shouldLogToFile) fileController.open("accX,accY,accZ,rawX,rawY,rawZ", "acceleration");
 
         accelerometerListener = new SensorEventListener() {
             @Override
@@ -46,7 +46,7 @@ public class AccelerometerController {
                 final Vector3 filteredAcceleration = filterChain.filter(rawAcceleration.subtract(initialAcceleration));
                 final long deltaT = event.timestamp - previousTimestamp;
                 consumer.accept(filteredAcceleration, deltaT);
-                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV());
+                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV()  + ',' + rawAcceleration.toCSV());
                 previousTimestamp = event.timestamp;
             }
 
