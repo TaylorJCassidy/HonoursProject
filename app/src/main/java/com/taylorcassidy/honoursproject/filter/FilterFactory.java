@@ -3,6 +3,7 @@ package com.taylorcassidy.honoursproject.filter;
 import com.taylorcassidy.honoursproject.filter.filters.CutoffFilter;
 import com.taylorcassidy.honoursproject.filter.filters.FIRFilter;
 import com.taylorcassidy.honoursproject.filter.filters.IFilter;
+import com.taylorcassidy.honoursproject.filter.filters.KalmanFilter;
 import com.taylorcassidy.honoursproject.filter.filters.RawFilter;
 import com.taylorcassidy.honoursproject.filter.filters.SlidingWindowFilter;
 import com.taylorcassidy.honoursproject.filter.filters.coefficients.Lowpass;
@@ -16,7 +17,8 @@ public class FilterFactory {
         LOW_PASS,
         CUTOFF,
         SLIDING_WINDOW_ACC,
-        SLIDING_WINDOW_VEC
+        SLIDING_WINDOW_VEC,
+        KALMAN_ACC
     }
 
     public static IFilter createFilter(FilterTypes filterType) {
@@ -37,6 +39,8 @@ public class FilterFactory {
                 return new SlidingWindowFilter(25, 0.05f, 0.1f);
             case SLIDING_WINDOW_VEC:
                 return new SlidingWindowFilter(25, 0.0001f, Float.MAX_VALUE);
+            case KALMAN_ACC:
+                return new KalmanFilter.AccelerationBuilder().build();
         }
     }
 }
