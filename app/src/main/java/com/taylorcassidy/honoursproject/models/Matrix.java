@@ -101,7 +101,8 @@ public class Matrix {
             inversedMatrix = inversedMatrix.multiply(1f / determinant);
         }
         else {
-            throw new RuntimeException("uh oh");
+            //inverting larger than a 2x2 matrix is significantly more complex
+            throw new InversionException(); //TODO eventually replace
         }
         return inversedMatrix;
     }
@@ -118,22 +119,22 @@ public class Matrix {
     }
 
     public static class MultiplicationException extends RuntimeException {
-        public MultiplicationException() {
-        }
+        public MultiplicationException() {}
     }
 
     public static class AdditionException extends RuntimeException {
-        public AdditionException() {
-        }
+        public AdditionException() {}
     }
 
     public static class SubtractionException extends RuntimeException {
-        public SubtractionException() {
-        }
+        public SubtractionException() {}
     }
 
     public static class NonSquareException extends RuntimeException {
-        public NonSquareException() {
-        }
+        public NonSquareException() {}
+    }
+
+    public static class InversionException extends RuntimeException {
+        public InversionException() {}
     }
 }
