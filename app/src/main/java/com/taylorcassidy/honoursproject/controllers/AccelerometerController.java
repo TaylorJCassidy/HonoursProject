@@ -43,10 +43,11 @@ public class AccelerometerController {
                     previousTimestamp = event.timestamp; //if first reading, make deltaT 0
                 }
 
-                final Vector3 filteredAcceleration = filterChain.filter(rawAcceleration.subtract(initialAcceleration));
+                final Vector3 rawMinusInitial = rawAcceleration.subtract(initialAcceleration);
+                final Vector3 filteredAcceleration = filterChain.filter(rawMinusInitial);
                 final long deltaT = event.timestamp - previousTimestamp;
                 consumer.accept(filteredAcceleration, deltaT);
-                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV()  + ',' + rawAcceleration.toCSV());
+                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV()  + ',' + rawMinusInitial.toCSV());
                 previousTimestamp = event.timestamp;
             }
 
