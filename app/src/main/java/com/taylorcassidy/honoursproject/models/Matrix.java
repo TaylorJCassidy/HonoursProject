@@ -34,7 +34,7 @@ public class Matrix {
     }
 
     public Matrix multiply(Matrix matrix) {
-//        if (cols != matrix.rows) throw new MultiplicationException();
+        if (cols != matrix.rows) throw new MultiplicationException();
         Matrix multipliedMatrix = new Matrix(rows, matrix.cols);
         for(int row = 0; row < multipliedMatrix.rows; row++) {
             for(int col = 0; col < multipliedMatrix.cols; col++) {
@@ -61,7 +61,7 @@ public class Matrix {
     }
 
     public Matrix add(Matrix matrix) {
-//        if (rows != matrix.getRows() && cols != matrix.getCols()) throw new AdditionException();
+        if (rows != matrix.getRows() && cols != matrix.getCols()) throw new AdditionException();
         Matrix addedMatrix = new Matrix(rows, cols);
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < cols; col++) {
@@ -73,7 +73,7 @@ public class Matrix {
     }
 
     public Matrix subtract(Matrix matrix) {
-        //        if (rows != matrix.getRows() && cols != matrix.getCols()) throw new AdditionException();
+        if (rows != matrix.getRows() && cols != matrix.getCols()) throw new SubtractionException();
         Matrix subractedMatrix = new Matrix(rows, cols);
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < cols; col++) {
@@ -85,7 +85,7 @@ public class Matrix {
     }
 
     public Matrix inverse() {
-//        if (rows != cols) //unsquare
+        if (rows != cols) throw new NonSquareException();
         Matrix inversedMatrix = new Matrix(rows, cols);
 
         //not pretty, I know
@@ -101,7 +101,7 @@ public class Matrix {
             inversedMatrix = inversedMatrix.multiply(1f / determinant);
         }
         else {
-            throw new RuntimeException();
+            throw new RuntimeException("uh oh");
         }
         return inversedMatrix;
     }
@@ -117,13 +117,23 @@ public class Matrix {
         return transposedMatrix;
     }
 
-    public static class MultiplicationException extends Exception {
+    public static class MultiplicationException extends RuntimeException {
         public MultiplicationException() {
         }
     }
 
-    public static class AdditionException extends Exception {
+    public static class AdditionException extends RuntimeException {
         public AdditionException() {
+        }
+    }
+
+    public static class SubtractionException extends RuntimeException {
+        public SubtractionException() {
+        }
+    }
+
+    public static class NonSquareException extends RuntimeException {
+        public NonSquareException() {
         }
     }
 }
