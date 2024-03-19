@@ -22,7 +22,12 @@ public class Vector3FilterChainer {
     }
 
     public static class Builder {
+        private final FilterFactory filterFactory;
         private final ArrayList<FilterFactory.FilterTypes> filterTypes = new ArrayList<>();
+
+        public Builder(FilterFactory filterFactory) {
+            this.filterFactory = filterFactory;
+        }
 
         public Builder withFilterType(FilterFactory.FilterTypes filterType) {
             filterTypes.add(filterType);
@@ -35,7 +40,7 @@ public class Vector3FilterChainer {
         }
 
         public Vector3FilterChainer build() {
-            List<Vector3Filter> filters = filterTypes.stream().map(Vector3Filter::new).collect(Collectors.toList());
+            List<Vector3Filter> filters = filterTypes.stream().map(filterFactory::createVector3Filter).collect(Collectors.toList());
             return new Vector3FilterChainer(filters);
         }
 

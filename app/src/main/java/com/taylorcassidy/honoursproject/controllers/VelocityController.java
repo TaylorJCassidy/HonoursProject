@@ -21,7 +21,7 @@ public class VelocityController {
     }
 
     public void registerVelocityListener(BiConsumer<Vector3, Long> consumer) {
-        final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
+        final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder(new FilterFactory()).withFilterTypes(filterTypes).build();
         if (shouldLogToFile) fileController.open("velX,velY,velZ", "velocity");
 
         accelerometerController.registerAccelerometerListener((acceleration, deltaT) -> {

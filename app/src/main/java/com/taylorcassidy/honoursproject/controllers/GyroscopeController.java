@@ -35,7 +35,7 @@ public class GyroscopeController {
 
     public void registerGyroscopeListener(Vector3 initialPoint) {
         point = initialPoint;
-        final Vector3FilterChainer filterChainer = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
+        final Vector3FilterChainer filterChainer = new Vector3FilterChainer.Builder(new FilterFactory()).withFilterTypes(filterTypes).build();
         gyroscopeListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {

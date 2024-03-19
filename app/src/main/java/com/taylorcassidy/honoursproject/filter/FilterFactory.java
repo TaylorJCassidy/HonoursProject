@@ -21,7 +21,7 @@ public class FilterFactory {
         KALMAN_ACC
     }
 
-    public static IFilter createFilter(FilterTypes filterType) {
+    public IFilter createFilter(FilterTypes filterType) {
         switch (filterType) {
             default:
             case NONE:
@@ -42,5 +42,9 @@ public class FilterFactory {
             case KALMAN_ACC:
                 return new KalmanFilter1D.AccelerationBuilder().build();
         }
+    }
+
+    public Vector3Filter createVector3Filter(FilterTypes filterType) {
+        return new Vector3Filter(createFilter(filterType), createFilter(filterType), createFilter(filterType));
     }
 }

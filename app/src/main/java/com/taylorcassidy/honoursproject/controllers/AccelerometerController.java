@@ -34,7 +34,7 @@ public class AccelerometerController {
     }
 
     public void registerAccelerometerListener(BiConsumer<Vector3, Long> consumer) {
-        final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
+        final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder(new FilterFactory()).withFilterTypes(filterTypes).build();
         if (shouldLogToFile) fileController.open("accX,accY,accZ,rawX,rawY,rawZ", "acceleration");
 
         accelerometerListener = new SensorEventListener() {
