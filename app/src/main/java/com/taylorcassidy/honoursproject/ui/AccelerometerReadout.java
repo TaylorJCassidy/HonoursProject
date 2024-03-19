@@ -43,14 +43,17 @@ public class AccelerometerReadout extends Fragment {
 
         accelerometerController = ((MainActivity) getActivity()).getAccelerationController();
 
-        bindWriteToFileSwitch();
+        bindSwitches();
         populateSpinners();
         displayAccelerometerReadouts();
     }
 
-    private void bindWriteToFileSwitch() {
+    private void bindSwitches() {
         binding.recordAcceleration.setChecked(accelerometerController.isShouldLogToFile());
         binding.recordAcceleration.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setShouldLogToFile(isChecked));
+
+        binding.useGyro.setChecked(accelerometerController.isUseGyroscope());
+        binding.useGyro.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setUseGyroscope(isChecked));
     }
 
     private void populateSpinners() {

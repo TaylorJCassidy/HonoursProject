@@ -69,6 +69,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/measure_acceleration" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/useGyro"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="@string/use_gyro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recordAcceleration" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

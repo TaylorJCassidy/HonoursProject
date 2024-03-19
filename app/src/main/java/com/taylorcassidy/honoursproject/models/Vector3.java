@@ -15,6 +15,13 @@ public class Vector3 {
         this(new float[] {0f, 0f, 0f}, 0L);
     }
 
+    public Vector3(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        timestamp = 0L;
+    }
+
     public Vector3(float[] vector, long timestamp) {
         x = vector[0];
         y = vector[1];
@@ -66,11 +73,33 @@ public class Vector3 {
         }, timestamp); //use timestamp of vector being multiplied from
     }
 
+    public Vector3 multiply(Matrix matrix) {
+        if (matrix.getCols() != 3 || matrix.getRows() != 3) throw new RuntimeException();
+
+        final float x = (this.x * matrix.getValue(0,0)) + (this.y * matrix.getValue(1, 0)) + (this.z * matrix.getValue(2, 0));
+        final float y = (this.x * matrix.getValue(0,1)) + (this.y * matrix.getValue(1, 1)) + (this.z * matrix.getValue(2, 1));
+        final float z = (this.x * matrix.getValue(0,2)) + (this.y * matrix.getValue(1, 2)) + (this.z * matrix.getValue(2, 2));
+
+        return new Vector3(new float[] {
+                x,
+                y,
+                z
+        }, timestamp); //use timestamp of vector being multiplied from
+    }
+
     public Vector3 multiply(float scalar) {
         return new Vector3(new float[] {
                 this.x * scalar,
                 this.y * scalar,
                 this.z * scalar
+        }, timestamp); //use timestamp of vector being multiplied from
+    }
+
+    public Vector3 divide(float scalar) {
+        return new Vector3(new float[] {
+                this.x / scalar,
+                this.y / scalar,
+                this.z / scalar
         }, timestamp); //use timestamp of vector being multiplied from
     }
 

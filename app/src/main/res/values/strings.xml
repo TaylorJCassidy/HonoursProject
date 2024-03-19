@@ -6,4 +6,5 @@
     <string name="velocity">Velocity</string>
     <string name="filter">Filter</string>
     <string name="log_to_file">Log to file</string>
+    <string name="use_gyro">Use gyro</string>
 </resources>

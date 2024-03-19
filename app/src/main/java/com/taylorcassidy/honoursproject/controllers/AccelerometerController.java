@@ -16,17 +16,20 @@ public class AccelerometerController {
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
     private final FileController fileController;
+    private final GyroscopeController gyroscopeController;
 
     private List<FilterFactory.FilterTypes> filterTypes;
     private SensorEventListener accelerometerListener;
-    private Vector3 initialAcceleration;
+    private Vector3 gravityVector;
     private long previousTimestamp;
     private boolean shouldLogToFile = false;
+    private boolean useGyroscope = true;
 
-    public AccelerometerController(SensorManager sensorManager, FileController fileController, List<FilterFactory.FilterTypes> filterTypes) {
+    public AccelerometerController(SensorManager sensorManager, FileController fileController, GyroscopeController gyroscopeController, List<FilterFactory.FilterTypes> filterTypes) {
         this.sensorManager = sensorManager;
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         this.fileController = fileController;
+        this.gyroscopeController = gyroscopeController;
         this.filterTypes = filterTypes;
     }
 
@@ -38,17 +41,21 @@ public class AccelerometerController {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 final Vector3 rawAcceleration = new Vector3(event.values, event.timestamp);
-                if (initialAcceleration == null) {
-                    initialAcceleration = rawAcceleration;
+
+                if (gravityVector == null) {
+                    if (useGyroscope) gyroscopeController.registerGyroscopeListener(rawAcceleration);
+                    else gravityVector = rawAcceleration;
                     previousTimestamp = event.timestamp; //if first reading, make deltaT 0
                 }
 
-                final Vector3 rawMinusInitial = rawAcceleration.subtract(initialAcceleration);
-                final Vector3 filteredAcceleration = filterChain.filter(rawMinusInitial);
-                final long deltaT = event.timestamp - previousTimestamp;
-                consumer.accept(filteredAcceleration, deltaT);
-                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV()  + ',' + rawMinusInitial.toCSV());
+                if (useGyroscope) gravityVector = gyroscopeController.getRotatedPoint();
+                final Vector3 rawMinusGravity = rawAcceleration.subtract(gravityVector);
+                final Vector3 filteredAcceleration = filterChain.filter(rawMinusGravity);
+
+                consumer.accept(filteredAcceleration, event.timestamp - previousTimestamp);
                 previousTimestamp = event.timestamp;
+
+                if (shouldLogToFile) fileController.write(filteredAcceleration.toCSV()  + ',' + rawMinusGravity.toCSV());
             }
 
             @Override
@@ -61,8 +68,9 @@ public class AccelerometerController {
     }
 
     public void unregisterAccelerometerListener() {
-        initialAcceleration = null;
+        gravityVector = null;
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
+        if (useGyroscope) gyroscopeController.unregisterGyroscopeListener();
         if (shouldLogToFile) fileController.close();
     }
 
@@ -80,5 +88,13 @@ public class AccelerometerController {
 
     public void setShouldLogToFile(boolean shouldLogToFile) {
         this.shouldLogToFile = shouldLogToFile;
+    }
+
+    public boolean isUseGyroscope() {
+        return useGyroscope;
+    }
+
+    public void setUseGyroscope(boolean useGyroscope) {
+        this.useGyroscope = useGyroscope;
     }
 }
