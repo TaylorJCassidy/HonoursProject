@@ -3,6 +3,7 @@ package com.taylorcassidy.honoursproject.models;
 import androidx.annotation.NonNull;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class Vector3 {
     private final float x;
@@ -20,6 +21,13 @@ public class Vector3 {
         this.y = y;
         this.z = z;
         timestamp = 0L;
+    }
+
+    public Vector3(float x, float y, float z, long timestamp) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.timestamp = timestamp;
     }
 
     public Vector3(float[] vector, long timestamp) {
@@ -118,5 +126,18 @@ public class Vector3 {
 
     public String toCSV() {
         return String.format(Locale.UK, "%f,%f,%f", x, y, z);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector3 vector3 = (Vector3) o;
+        return Float.compare(vector3.x, x) == 0 && Float.compare(vector3.y, y) == 0 && Float.compare(vector3.z, z) == 0 && timestamp == vector3.timestamp;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z, timestamp);
     }
 }
