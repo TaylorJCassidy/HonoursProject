@@ -21,16 +21,16 @@ import java.util.List;
 public class Vector3FilterChainerTest extends TestCase {
 
     @Mock
-    private FilterFactory filterFactory;
+    private FilterFactory mockFilterFactory;
 
     @Test
     public void testFilterWithOneFilter() {
         Vector3Filter mockVector3Filter = mock(Vector3Filter.class);
         when(mockVector3Filter.filter(any(Vector3.class))).thenReturn(new Vector3(10f, 0f, 0f));
-        when(filterFactory.createVector3Filter(any(FilterFactory.FilterTypes.class))).thenReturn(mockVector3Filter);
+        when(mockFilterFactory.createVector3Filter(any(FilterFactory.FilterTypes.class))).thenReturn(mockVector3Filter);
 
         Vector3FilterChainer filterChainer =
-                new Vector3FilterChainer.Builder(filterFactory)
+                new Vector3FilterChainer.Builder(mockFilterFactory)
                         .withFilterType(FilterFactory.FilterTypes.NONE)
                         .build();
 
@@ -48,10 +48,10 @@ public class Vector3FilterChainerTest extends TestCase {
         Vector3Filter mockVector3Filter2 = mock(Vector3Filter.class);
         when(mockVector3Filter2.filter(any(Vector3.class))).thenReturn(new Vector3(25f, 0f, 0f));
 
-        when(filterFactory.createVector3Filter(any(FilterFactory.FilterTypes.class))).thenReturn(mockVector3Filter1, mockVector3Filter2);
+        when(mockFilterFactory.createVector3Filter(any(FilterFactory.FilterTypes.class))).thenReturn(mockVector3Filter1, mockVector3Filter2);
 
         Vector3FilterChainer filterChainer =
-                new Vector3FilterChainer.Builder(filterFactory)
+                new Vector3FilterChainer.Builder(mockFilterFactory)
                         .withFilterTypes(List.of(FilterFactory.FilterTypes.NONE, FilterFactory.FilterTypes.NONE))
                         .build();
 

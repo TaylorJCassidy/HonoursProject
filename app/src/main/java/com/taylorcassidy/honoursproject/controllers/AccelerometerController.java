@@ -18,7 +18,7 @@ public class AccelerometerController {
     private final FileController fileController;
     private final GyroscopeController gyroscopeController;
 
-    private List<FilterFactory.FilterTypes> filterTypes;
+    private final List<FilterFactory.FilterTypes> filterTypes;
     private SensorEventListener accelerometerListener;
     private Vector3 gravityVector;
     private long previousTimestamp;
@@ -76,10 +76,6 @@ public class AccelerometerController {
 
     public List<FilterFactory.FilterTypes> getFilterTypes() {
         return filterTypes;
-    }
-
-    public void setFilterTypes(List<FilterFactory.FilterTypes> filterTypes) {
-        this.filterTypes = filterTypes;
     }
 
     public boolean isShouldLogToFile() {

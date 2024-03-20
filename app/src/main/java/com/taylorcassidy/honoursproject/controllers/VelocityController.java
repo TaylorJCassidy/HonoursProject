@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 public class VelocityController {
     private final AccelerometerController accelerometerController;
     private final FileController fileController;
-    private List<FilterFactory.FilterTypes> filterTypes;
+    private final List<FilterFactory.FilterTypes> filterTypes;
     private Vector3 velocity = new Vector3();
     private boolean shouldLogToFile = false;
 
@@ -43,10 +43,6 @@ public class VelocityController {
 
     public List<FilterFactory.FilterTypes> getFilterTypes() {
         return filterTypes;
-    }
-
-    public void setFilterTypes(List<FilterFactory.FilterTypes> filterTypes) {
-        this.filterTypes = filterTypes;
     }
 
     public boolean isShouldLogToFile() {
