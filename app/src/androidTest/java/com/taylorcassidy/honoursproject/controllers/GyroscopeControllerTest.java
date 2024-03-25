@@ -1,9 +1,7 @@
 package com.taylorcassidy.honoursproject.controllers;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,35 +20,28 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.function.BiConsumer;
-
 @RunWith(MockitoJUnitRunner.class)
-public class AccelerationControllerTest {
-
-    @Mock
-    FileController mockFileController;
-    @Mock
-    GyroscopeController mockGyroscopeController;
+public class GyroscopeControllerTest {
     @Mock
     Vector3FilterChainer mockFilterChainer;
 
-    AccelerometerController accelerometerController;
+    GyroscopeController gyroscopeController;
 
     @Before
     public void setUp() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        accelerometerController = new AccelerometerController(context.getSystemService(SensorManager.class), mockFileController, mockGyroscopeController, mockFilterChainer);
+        gyroscopeController = new GyroscopeController(context.getSystemService(SensorManager.class), mockFilterChainer);
     }
 
     @Test
-    public void testRegisterAccelerometerListener() {
-        BiConsumer<Vector3, Long> mockConsumer = mock(BiConsumer.class);
+    public void testRegisterGyroscopeListener() {
         Vector3 vector3 = new Vector3(1f, 1f, 1f);
+        Vector3 pointToRotate = new Vector3(0f, 0f, 9.8f);
         when(mockFilterChainer.filter(any(Vector3.class))).thenReturn(vector3);
 
-        accelerometerController.registerAccelerometerListener(mockConsumer);
+        gyroscopeController.registerGyroscopeListener(pointToRotate);
 
         verify(mockFilterChainer, timeout(100).atLeastOnce()).filter(any(Vector3.class));
-        verify(mockConsumer, timeout(100).atLeastOnce()).accept(eq(vector3), anyLong());
+        assertEquals(gyroscopeController.getRotatedPoint(), pointToRotate);
     }
 }
