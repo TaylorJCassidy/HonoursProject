@@ -61,7 +61,7 @@ public class MatrixTest extends TestCase {
         assertEquals(AsubtractB.getValue(1,1), 6f, 0.01f);
     }
 
-    public void testInverse() {
+    public void testInverse2DMatrix() {
         Matrix A = new Matrix(new float[][]{{4f, 7f}, {2f, 6f}});
 
         Matrix inverseA = A.inverse();
@@ -72,6 +72,14 @@ public class MatrixTest extends TestCase {
         assertEquals(inverseA.getValue(0,1),  -0.7f, 0.01f);
         assertEquals(inverseA.getValue(1,0), -0.2f, 0.01f);
         assertEquals(inverseA.getValue(1,1), 0.4f, 0.01f);
+    }
+
+    public void testInverse1DMatrix() {
+        Matrix A = new Matrix(new float[][]{{10f}});
+
+        Matrix inverseA = A.inverse();
+
+        assertEquals(inverseA.getValue(0,0), 0.1f, 0.01f);
     }
 
     public void testTranspose() {

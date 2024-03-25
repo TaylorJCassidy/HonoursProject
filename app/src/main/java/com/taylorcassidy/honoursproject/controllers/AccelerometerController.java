@@ -23,7 +23,7 @@ public class AccelerometerController {
     private Vector3 gravityVector;
     private long previousTimestamp;
     private boolean shouldLogToFile = false;
-    private boolean useGyroscope = true;
+    private boolean useGyroscope = false;
 
     public AccelerometerController(SensorManager sensorManager, FileController fileController, GyroscopeController gyroscopeController, List<FilterFactory.FilterTypes> filterTypes) {
         this.sensorManager = sensorManager;

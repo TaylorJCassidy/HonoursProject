@@ -40,6 +40,7 @@ public class Vector3FilterChainer {
         }
 
         public Vector3FilterChainer build() {
+            if (filterTypes.size() == 0) filterTypes.add(FilterFactory.FilterTypes.NONE);
             List<Vector3Filter> filters = filterTypes.stream().map(filterFactory::createVector3Filter).collect(Collectors.toList());
             return new Vector3FilterChainer(filters);
         }
