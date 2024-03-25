@@ -5,11 +5,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.taylorcassidy.honoursproject.filter.FilterFactory;
 import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 
 public class AccelerometerController {
@@ -18,23 +16,22 @@ public class AccelerometerController {
     private final FileController fileController;
     private final GyroscopeController gyroscopeController;
 
-    private final List<FilterFactory.FilterTypes> filterTypes;
+    private final Vector3FilterChainer filterChainer;
     private SensorEventListener accelerometerListener;
     private Vector3 gravityVector;
     private long previousTimestamp;
     private boolean shouldLogToFile = false;
     private boolean useGyroscope = false;
 
-    public AccelerometerController(SensorManager sensorManager, FileController fileController, GyroscopeController gyroscopeController, List<FilterFactory.FilterTypes> filterTypes) {
+    public AccelerometerController(SensorManager sensorManager, FileController fileController, GyroscopeController gyroscopeController, Vector3FilterChainer filterChainer) {
         this.sensorManager = sensorManager;
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         this.fileController = fileController;
         this.gyroscopeController = gyroscopeController;
-        this.filterTypes = filterTypes;
+        this.filterChainer = filterChainer;
     }
 
     public void registerAccelerometerListener(BiConsumer<Vector3, Long> consumer) {
-        final Vector3FilterChainer filterChain = new Vector3FilterChainer.Builder(new FilterFactory()).withFilterTypes(filterTypes).build();
         if (shouldLogToFile) fileController.open("accX,accY,accZ,rawX,rawY,rawZ", "acceleration");
 
         accelerometerListener = new SensorEventListener() {
@@ -50,7 +47,7 @@ public class AccelerometerController {
 
                 if (useGyroscope) gravityVector = gyroscopeController.getRotatedPoint();
                 final Vector3 rawMinusGravity = rawAcceleration.subtract(gravityVector);
-                final Vector3 filteredAcceleration = filterChain.filter(rawMinusGravity);
+                final Vector3 filteredAcceleration = filterChainer.filter(rawMinusGravity);
 
                 consumer.accept(filteredAcceleration, event.timestamp - previousTimestamp);
                 previousTimestamp = event.timestamp;
@@ -74,8 +71,8 @@ public class AccelerometerController {
         if (shouldLogToFile) fileController.close();
     }
 
-    public List<FilterFactory.FilterTypes> getFilterTypes() {
-        return filterTypes;
+    public Vector3FilterChainer getFilterChainer() {
+        return filterChainer;
     }
 
     public boolean isShouldLogToFile() {

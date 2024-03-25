@@ -30,9 +30,7 @@ public class Vector3FilterChainerTest extends TestCase {
         when(mockFilterFactory.createVector3Filter(any(FilterFactory.FilterTypes.class))).thenReturn(mockVector3Filter);
 
         Vector3FilterChainer filterChainer =
-                new Vector3FilterChainer.Builder(mockFilterFactory)
-                        .withFilterType(FilterFactory.FilterTypes.NONE)
-                        .build();
+                new Vector3FilterChainer(1, mockFilterFactory);
 
         Vector3 v = filterChainer.filter(new Vector3(0f, 0f, 0f));
 
@@ -51,9 +49,7 @@ public class Vector3FilterChainerTest extends TestCase {
         when(mockFilterFactory.createVector3Filter(any(FilterFactory.FilterTypes.class))).thenReturn(mockVector3Filter1, mockVector3Filter2);
 
         Vector3FilterChainer filterChainer =
-                new Vector3FilterChainer.Builder(mockFilterFactory)
-                        .withFilterTypes(List.of(FilterFactory.FilterTypes.NONE, FilterFactory.FilterTypes.NONE))
-                        .build();
+                new Vector3FilterChainer(List.of(FilterFactory.FilterTypes.NONE, FilterFactory.FilterTypes.NONE), mockFilterFactory);
 
         Vector3 v = filterChainer.filter(new Vector3(0f, 0f, 0f));
 

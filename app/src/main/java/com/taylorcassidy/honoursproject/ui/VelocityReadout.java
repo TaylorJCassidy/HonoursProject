@@ -16,6 +16,7 @@ import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.controllers.VelocityController;
 import com.taylorcassidy.honoursproject.databinding.FragmentVelocityReadoutBinding;
 import com.taylorcassidy.honoursproject.filter.FilterFactory;
+import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.helpers.SpinnerHelper;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
@@ -50,7 +51,10 @@ public class VelocityReadout extends Fragment {
     }
 
     private void populateSpinner() {
-        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), List.of(FilterFactory.FilterTypes.values()), (filter) -> velocityController.getFilterTypes().set(0, filter), velocityController.getFilterTypes().get(0));
+        final List<FilterFactory.FilterTypes> filterTypes = List.of(FilterFactory.FilterTypes.values());
+        Vector3FilterChainer filterChainer = velocityController.getFilterChainer();
+
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), filterTypes, (filter) -> filterChainer.setFilter(filter, 0), filterChainer.getFilter(0));
     }
 
     private void bindWriteToFileSwitch() {
