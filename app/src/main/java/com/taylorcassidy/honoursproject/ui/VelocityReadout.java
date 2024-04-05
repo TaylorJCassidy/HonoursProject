@@ -58,7 +58,7 @@ public class VelocityReadout extends Fragment {
     }
 
     private void bindWriteToFileSwitch() {
-        binding.recordVelocity.setChecked(velocityController.isShouldLogToFile());
+        binding.recordVelocity.setChecked(velocityController.shouldLogToFile());
         binding.recordVelocity.setOnCheckedChangeListener((buttonView, isChecked) -> velocityController.setShouldLogToFile(isChecked));
     }
 

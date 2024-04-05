@@ -18,8 +18,8 @@ public class Vector3FilterChainer {
         this.filterFactory = filterFactory;
     }
 
-    public Vector3FilterChainer(int count, FilterFactory filterFactory) {
-        this(new ArrayList<>(Collections.nCopies(count, FilterFactory.FilterTypes.NONE)), filterFactory);
+    public Vector3FilterChainer(int filterCount, FilterFactory filterFactory) {
+        this(new ArrayList<>(Collections.nCopies(filterCount, FilterFactory.FilterTypes.NONE)), filterFactory);
     }
 
     public Vector3FilterChainer(int count) {

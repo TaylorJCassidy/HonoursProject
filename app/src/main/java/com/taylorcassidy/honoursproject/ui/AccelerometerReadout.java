@@ -50,11 +50,11 @@ public class AccelerometerReadout extends Fragment {
     }
 
     private void bindSwitches() {
-        binding.recordAcceleration.setChecked(accelerometerController.isShouldLogToFile());
+        binding.recordAcceleration.setChecked(accelerometerController.shouldLogToFile());
         binding.recordAcceleration.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setShouldLogToFile(isChecked));
 
-        binding.useGyro.setChecked(accelerometerController.isUseGyroscope());
-        binding.useGyro.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setUseGyroscope(isChecked));
+        binding.useGyro.setChecked(accelerometerController.shouldUseGyroscope());
+        binding.useGyro.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setShouldUseGyroscope(isChecked));
     }
 
     private void populateSpinners() {

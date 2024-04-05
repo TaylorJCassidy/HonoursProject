@@ -15,13 +15,13 @@ public class AccelerometerController {
     private final Sensor accelerometer;
     private final FileController fileController;
     private final GyroscopeController gyroscopeController;
-
     private final Vector3FilterChainer filterChainer;
+
     private SensorEventListener accelerometerListener;
     private Vector3 gravityVector;
     private long previousTimestamp;
     private boolean shouldLogToFile = false;
-    private boolean useGyroscope = false;
+    private boolean shouldUseGyroscope = false;
 
     public AccelerometerController(SensorManager sensorManager, FileController fileController, GyroscopeController gyroscopeController, Vector3FilterChainer filterChainer) {
         this.sensorManager = sensorManager;
@@ -40,12 +40,12 @@ public class AccelerometerController {
                 final Vector3 rawAcceleration = new Vector3(event.values, event.timestamp);
 
                 if (gravityVector == null) {
-                    if (useGyroscope) gyroscopeController.registerGyroscopeListener(rawAcceleration);
+                    if (shouldUseGyroscope) gyroscopeController.registerGyroscopeListener(rawAcceleration);
                     else gravityVector = rawAcceleration;
                     previousTimestamp = event.timestamp; //if first reading, make deltaT 0
                 }
 
-                if (useGyroscope) gravityVector = gyroscopeController.getRotatedPoint();
+                if (shouldUseGyroscope) gravityVector = gyroscopeController.getRotatedPoint();
                 final Vector3 rawMinusGravity = rawAcceleration.subtract(gravityVector);
                 final Vector3 filteredAcceleration = filterChainer.filter(rawMinusGravity);
 
@@ -67,7 +67,7 @@ public class AccelerometerController {
     public void unregisterAccelerometerListener() {
         gravityVector = null;
         sensorManager.unregisterListener(accelerometerListener, accelerometer);
-        if (useGyroscope) gyroscopeController.unregisterGyroscopeListener();
+        if (shouldUseGyroscope) gyroscopeController.unregisterGyroscopeListener();
         if (shouldLogToFile) fileController.close();
     }
 
@@ -75,7 +75,7 @@ public class AccelerometerController {
         return filterChainer;
     }
 
-    public boolean isShouldLogToFile() {
+    public boolean shouldLogToFile() {
         return shouldLogToFile;
     }
 
@@ -83,11 +83,11 @@ public class AccelerometerController {
         this.shouldLogToFile = shouldLogToFile;
     }
 
-    public boolean isUseGyroscope() {
-        return useGyroscope;
+    public boolean shouldUseGyroscope() {
+        return shouldUseGyroscope;
     }
 
-    public void setUseGyroscope(boolean useGyroscope) {
-        this.useGyroscope = useGyroscope;
+    public void setShouldUseGyroscope(boolean shouldUseGyroscope) {
+        this.shouldUseGyroscope = shouldUseGyroscope;
     }
 }

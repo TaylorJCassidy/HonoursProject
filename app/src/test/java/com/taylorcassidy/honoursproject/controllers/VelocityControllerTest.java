@@ -46,7 +46,7 @@ public class VelocityControllerTest {
             ((BiConsumer<Vector3, Long>) i.getArgument(0)).accept(accelerometerReturn, 1L);
             return null;
         }).when(mockAccelerometerController).registerAccelerometerListener(any());
-        when(mockFilterChainer.filter(accelerometerReturn)).thenReturn(filterReturn);
+        when(mockFilterChainer.filter(accelerometerReturn.multiply(1 / 1e9f))).thenReturn(filterReturn);
 
         velocityController.registerVelocityListener(mockConsumer);
 

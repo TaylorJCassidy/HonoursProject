@@ -27,7 +27,7 @@ public class ControllerIT {
 
         GyroscopeController gyroscopeController = new GyroscopeController(context.getSystemService(SensorManager.class), new Vector3FilterChainer(1));
         AccelerometerController accelerometerController = new AccelerometerController(context.getSystemService(SensorManager.class), new FileController(context), gyroscopeController, new Vector3FilterChainer(2));
-        accelerometerController.setUseGyroscope(true);
+        accelerometerController.setShouldUseGyroscope(true);
         VelocityController velocityController = new VelocityController(accelerometerController, new FileController(context), new Vector3FilterChainer(1));
         DisplacementController displacementController = new DisplacementController(velocityController, new FileController(context));
 

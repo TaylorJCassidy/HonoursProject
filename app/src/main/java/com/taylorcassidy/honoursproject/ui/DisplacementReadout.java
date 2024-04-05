@@ -43,7 +43,7 @@ public class DisplacementReadout extends Fragment {
     }
 
     private void bindWriteToFileSwitch() {
-        binding.recordDisplacement.setChecked(displacementController.isShouldLogToFile());
+        binding.recordDisplacement.setChecked(displacementController.shouldLogToFile());
         binding.recordDisplacement.setOnCheckedChangeListener((buttonView, isChecked) -> displacementController.setShouldLogToFile(isChecked));
     }
 

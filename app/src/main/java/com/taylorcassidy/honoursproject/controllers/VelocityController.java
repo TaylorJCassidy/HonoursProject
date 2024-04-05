@@ -42,7 +42,7 @@ public class VelocityController {
         return filterChainer;
     }
 
-    public boolean isShouldLogToFile() {
+    public boolean shouldLogToFile() {
         return shouldLogToFile;
     }
 
