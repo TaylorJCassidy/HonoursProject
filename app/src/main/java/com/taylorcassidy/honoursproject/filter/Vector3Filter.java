@@ -8,10 +8,10 @@ public class Vector3Filter {
     private final IFilter yFilter;
     private final IFilter zFilter;
 
-    public Vector3Filter(FilterFactory.FilterTypes filterType) {
-        xFilter = FilterFactory.createFilter(filterType);
-        yFilter = FilterFactory.createFilter(filterType);
-        zFilter = FilterFactory.createFilter(filterType);
+    public Vector3Filter(IFilter xFilter, IFilter yFilter, IFilter zFilter) {
+        this.xFilter = xFilter;
+        this.yFilter = yFilter;
+        this.zFilter = zFilter;
     }
 
     public Vector3 filter(Vector3 vector) {

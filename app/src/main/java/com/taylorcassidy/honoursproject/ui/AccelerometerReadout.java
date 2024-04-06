@@ -17,6 +17,7 @@ import com.taylorcassidy.honoursproject.R;
 import com.taylorcassidy.honoursproject.databinding.FragmentAccelerometerReadoutBinding;
 import com.taylorcassidy.honoursproject.controllers.AccelerometerController;
 import com.taylorcassidy.honoursproject.filter.FilterFactory;
+import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.helpers.SpinnerHelper;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
@@ -49,16 +50,19 @@ public class AccelerometerReadout extends Fragment {
     }
 
     private void bindSwitches() {
-        binding.recordAcceleration.setChecked(accelerometerController.isShouldLogToFile());
+        binding.recordAcceleration.setChecked(accelerometerController.shouldLogToFile());
         binding.recordAcceleration.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setShouldLogToFile(isChecked));
 
-        binding.useGyro.setChecked(accelerometerController.isUseGyroscope());
-        binding.useGyro.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setUseGyroscope(isChecked));
+        binding.useGyro.setChecked(accelerometerController.shouldUseGyroscope());
+        binding.useGyro.setOnCheckedChangeListener((buttonView, isChecked) -> accelerometerController.setShouldUseGyroscope(isChecked));
     }
 
     private void populateSpinners() {
-        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), List.of(FilterFactory.FilterTypes.values()), (filter) -> accelerometerController.getFilterTypes().set(0, filter), accelerometerController.getFilterTypes().get(0));
-        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner2), List.of(FilterFactory.FilterTypes.values()), (filter) -> accelerometerController.getFilterTypes().set(1, filter), accelerometerController.getFilterTypes().get(1));
+        final List<FilterFactory.FilterTypes> filterTypes = List.of(FilterFactory.FilterTypes.values());
+        Vector3FilterChainer filterChainer = accelerometerController.getFilterChainer();
+
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner1), filterTypes, (filter) -> filterChainer.setFilter(filter, 0), filterChainer.getFilter(0));
+        SpinnerHelper.populate(getView().findViewById(R.id.filterSpinner2), filterTypes, (filter) -> filterChainer.setFilter(filter, 1), filterChainer.getFilter(1));
     }
 
     @SuppressLint("ClickableViewAccessibility")

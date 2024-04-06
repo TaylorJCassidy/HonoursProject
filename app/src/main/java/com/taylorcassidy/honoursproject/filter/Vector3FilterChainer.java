@@ -3,14 +3,27 @@ package com.taylorcassidy.honoursproject.filter;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Vector3FilterChainer {
     private final List<Vector3Filter> filters;
+    private final List<FilterFactory.FilterTypes> filterTypes;
+    private final FilterFactory filterFactory;
 
-    private Vector3FilterChainer(List<Vector3Filter> filters) {
-        this.filters = filters;
+    public Vector3FilterChainer(List<FilterFactory.FilterTypes> filterTypes, FilterFactory filterFactory) {
+        this.filters = filterTypes.stream().map(filterFactory::createVector3Filter).collect(Collectors.toList());
+        this.filterTypes = filterTypes;
+        this.filterFactory = filterFactory;
+    }
+
+    public Vector3FilterChainer(int filterCount, FilterFactory filterFactory) {
+        this(new ArrayList<>(Collections.nCopies(filterCount, FilterFactory.FilterTypes.NONE)), filterFactory);
+    }
+
+    public Vector3FilterChainer(int count) {
+        this(count, new FilterFactory());
     }
 
     public Vector3 filter(Vector3 vector) {
@@ -21,23 +34,12 @@ public class Vector3FilterChainer {
         return filtered;
     }
 
-    public static class Builder {
-        private final ArrayList<FilterFactory.FilterTypes> filterTypes = new ArrayList<>();
+    public FilterFactory.FilterTypes getFilter(int idx) {
+        return filterTypes.get(idx);
+    }
 
-        public Builder withFilterType(FilterFactory.FilterTypes filterType) {
-            filterTypes.add(filterType);
-            return this;
-        }
-
-        public Builder withFilterTypes(List<FilterFactory.FilterTypes> filterTypes) {
-            this.filterTypes.addAll(filterTypes);
-            return this;
-        }
-
-        public Vector3FilterChainer build() {
-            List<Vector3Filter> filters = filterTypes.stream().map(Vector3Filter::new).collect(Collectors.toList());
-            return new Vector3FilterChainer(filters);
-        }
-
+    public void setFilter(FilterFactory.FilterTypes filterType, int idx) {
+        filterTypes.set(idx, filterType);
+        filters.set(idx, filterFactory.createVector3Filter(filterType));
     }
 }

@@ -35,7 +35,7 @@ public class DisplacementController {
         if (shouldLogToFile) fileController.close();
     }
 
-    public boolean isShouldLogToFile() {
+    public boolean shouldLogToFile() {
         return shouldLogToFile;
     }
 

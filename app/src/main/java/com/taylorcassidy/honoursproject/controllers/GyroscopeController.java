@@ -10,32 +10,28 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.taylorcassidy.honoursproject.filter.FilterFactory;
 import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 import com.taylorcassidy.honoursproject.models.Matrix;
 import com.taylorcassidy.honoursproject.models.Vector3;
 
-import java.util.List;
-
 public class GyroscopeController {
     private final SensorManager sensorManager;
     private final Sensor gyroscope;
+    private final Vector3FilterChainer filterChainer;
 
     private Vector3 point;
 
     private SensorEventListener gyroscopeListener;
-    private List<FilterFactory.FilterTypes> filterTypes;
     private long previousTimestamp;
 
-    public GyroscopeController(SensorManager sensorManager, List<FilterFactory.FilterTypes> filterTypes) {
+    public GyroscopeController(SensorManager sensorManager, Vector3FilterChainer filterChainer) {
         this.sensorManager = sensorManager;
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        this.filterTypes = filterTypes;
+        this.filterChainer = filterChainer;
     }
 
     public void registerGyroscopeListener(Vector3 initialPoint) {
         point = initialPoint;
-        final Vector3FilterChainer filterChainer = new Vector3FilterChainer.Builder().withFilterTypes(filterTypes).build();
         gyroscopeListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {

@@ -11,10 +11,7 @@ import com.taylorcassidy.honoursproject.controllers.FileController;
 import com.taylorcassidy.honoursproject.controllers.GyroscopeController;
 import com.taylorcassidy.honoursproject.controllers.VelocityController;
 import com.taylorcassidy.honoursproject.databinding.ActivityMainBinding;
-import com.taylorcassidy.honoursproject.filter.FilterFactory;
-
-import java.util.Arrays;
-import java.util.List;
+import com.taylorcassidy.honoursproject.filter.Vector3FilterChainer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        gyroscopeController = new GyroscopeController((SensorManager) getSystemService(SENSOR_SERVICE), List.of(FilterFactory.FilterTypes.NONE));
-        accelerometerController = new AccelerometerController((SensorManager) getSystemService(SENSOR_SERVICE), new FileController(getBaseContext()), gyroscopeController, Arrays.asList(FilterFactory.FilterTypes.NONE, FilterFactory.FilterTypes.NONE));
-        velocityController = new VelocityController(accelerometerController, new FileController(getBaseContext()), Arrays.asList(FilterFactory.FilterTypes.NONE));
+        gyroscopeController = new GyroscopeController((SensorManager) getSystemService(SENSOR_SERVICE), new Vector3FilterChainer(1));
+        accelerometerController = new AccelerometerController((SensorManager) getSystemService(SENSOR_SERVICE), new FileController(getBaseContext()), gyroscopeController, new Vector3FilterChainer(2));
+        velocityController = new VelocityController(accelerometerController, new FileController(getBaseContext()), new Vector3FilterChainer(1));
         displacementController = new DisplacementController(velocityController, new FileController(getBaseContext()));
     }
 
